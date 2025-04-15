@@ -5,7 +5,7 @@
   <br>
   <p>منصة متكاملة لبناء المشاريع البرمجية باستخدام الذكاء الاصطناعي</p>
   
-  [![GitHub stars](https://img.shields.io/github/stars/openaziz/Open-aziz-ai)](https://github.com/openaziz/Open-aziz-ai/stargazers)
+  [![GitHub stars](https://github.com/openaziz/aziz-ai-main.git)](https://github.com/openaziz/aziz-ai-main.git)
   [![GitHub forks](https://img.shields.io/github/forks/openaziz/Open-aziz-ai)](https://github.com/openaziz/Open-aziz-ai/network/members)
   [![GitHub issues](https://img.shields.io/github/issues/openaziz/Open-aziz-ai)](https://github.com/openaziz/Open-aziz-ai/issues)
   [![GitHub license](https://img.shields.io/github/license/openaziz/Open-aziz-ai)](https://github.com/openaziz/Open-aziz-ai/blob/main/LICENSE)
@@ -31,8 +31,8 @@
 
 1. قم بتنزيل المشروع أو استنساخه:
    \`\`\`bash
-   git clone https://github.com/openaziz/Open-aziz-ai.git
-   cd Open-aziz-ai
+   https://github.com/openaziz/aziz-ai-main.git
+   cd aziz-ai-main.git
    \`\`\`
 
 2. قم بتشغيل سكريبت التثبيت:
@@ -48,8 +48,8 @@
 
 1. قم بتنزيل المشروع أو استنساخه:
    \`\`\`bash
-   git clone https://github.com/openaziz/Open-aziz-ai.git
-   cd Open-aziz-ai
+   git clone https://github.com/openaziz/aziz-ai-main.git
+   cd aziz-ai-main.git
    \`\`\`
 
 2. قم بتثبيت التبعيات:

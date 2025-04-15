@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة بوت التليجرام الذكي - AzizAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AzizAI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/code-editor"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/hosting"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="/repositories"><i class="fas fa-database"></i> المستودعات</a></li>
+                    <li><a href="/bot-manager" class="active"><i class="fas fa-robot"></i> إدارة البوت</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container mx-auto py-8 px-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold">إدارة بوت التليجرام الذكي</h1>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <div id="status-indicator" class="h-3 w-3 rounded-full bg-red-500"></div>
+                            <span id="status-text" class="text-sm">غير متصل</span>
+                        </div>
+                        <button id="start-bot" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                            <i class="fas fa-play mr-2"></i>
+                            تشغيل البوت
+                        </button>
+                        <button id="stop-bot" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded hidden">
+                            <i class="fas fa-stop mr-2"></i>
+                            إيقاف البوت
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        لوحة التحكم
+                    </button>
+                    <button class="tab" data-tab="code">
+                        <i class="fas fa-code mr-2"></i>
+                        الكود
+                    </button>
+                    <button class="tab" data-tab="conversations">
+                        <i class="fas fa-comments mr-2"></i>
+                        المحادثات
+                    </button>
+                    <button class="tab" data-tab="settings">
+                        <i class="fas fa-cog mr-2"></i>
+                        الإعدادات
+                    </button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4">حالة البوت</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">الحالة:</span>
+                                    <span id="bot-status-badge" class="badge bg-red-600 text-white px-2 py-1 rounded">غير متصل</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">وقت التشغيل:</span>
+                                    <span id="uptime">0 دقائق</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">الذاكرة:</span>
+                                    <span>256 MB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">المعالج:</span>
+                                    <span>5%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4">إحصائيات</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">عدد المستخدمين:</span>
+                                    <span>128</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">المحادثات اليوم:</span>
+                                    <span>45</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">إجمالي الرسائل:</span>
+                                    <span>1,245</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">استخدام API:</span>
+                                    <span>78%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4">النماذج المستخدمة</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">GPT-4o:</span>
+                                    <span class="badge bg-green-600 text-white px-2 py-1 rounded">نشط</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">GPT-4 Vision:</span>
+                                    <span class="badge bg-green-600 text-white px-2 py-1 rounded">نشط</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Whisper:</span>
+                                    <span class="badge bg-green-600 text-white px-2 py-1 rounded">نشط</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Embeddings:</span>
+                                    <span class="badge bg-green-600 text-white px-2 py-1 rounded">نشط</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-4">سجل الأحداث</h3>
+                        <div class="h-[400px] overflow-y-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-700">
+                                        <th class="text-left py-2 px-4 text-gray-400">الوقت</th>
+                                        <th class="text-left py-2 px-4 text-gray-400">المستوى</th>
+                                        <th class="text-left py-2 px-4 text-gray-400">الرسالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-container">
+                                    <!-- سيتم إضافة السجلات هنا بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Tab -->
+                <div id="code-tab" class="tab-content" style="display: none;">
+                    <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-4">كود البوت</h3>
+                        <div class="h-[600px] bg-gray-900 rounded-md overflow-hidden mb-4 code-editor-container">
+                            <textarea id="python-code" class="w-full h-full bg-gray-900 text-white p-4 font-mono"></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="save-code" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+                                حفظ الكود
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conversations Tab -->
+                <div id="conversations-tab" class="tab-content" style="display: none;">
+                    <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-4">المحادثات الأخيرة</h3>
+                        <div id="conversations-container" class="space-y-6">
+                            <!-- سيتم إضافة المحادثات هنا بواسطة JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings-tab" class="tab-content" style="display: none;">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4">مفاتيح API</h3>
+                            <div class="space-y-4">
+                                <div class="space-y-2">
+                                    <label for="telegram-token">Telegram Bot Token</label>
+                                    <input id="telegram-token" type="password" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="openai-key">OpenAI API Key</label>
+                                    <input id="openai-key" type="password" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="wolfram-id">Wolfram Alpha App ID</label>
+                                    <input id="wolfram-id" type="password" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="serpapi-key">SerpAPI Key</label>
+                                    <input id="serpapi-key" type="password" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                </div>
+                                <button id="save-api-keys" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+                                    حفظ المفاتيح
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4">إعدادات البوت</h3>
+                            <div class="space-y-6">
+                                <div class="space-y-4">
+                                    <h4 class="text-md font-medium">نماذج الذكاء الاصطناعي</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <label for="model-creative">الوضع الإبداعي</label>
+                                            <select id="model-creative" class="bg-gray-700 border-gray-600 text-white p-2 rounded w-[180px]">
+                                                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                                <option value="gpt-4o">GPT-4o</option>
+                                                <option value="gpt-4">GPT-4</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <label for="model-precise">الوضع الدقيق</label>
+                                            <select id="model-precise" class="bg-gray-700 border-gray-600 text-white p-2 rounded w-[180px]">
+                                                <option value="gpt-4-0125-preview">GPT-4 Preview</option>
+                                                <option value="gpt-4o">GPT-4o</option>
+                                                <option value="gpt-4">GPT-4</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <label for="model-code">وضع البرمجة</label>
+                                            <select id="model-code" class="bg-gray-700 border-gray-600 text-white p-2 rounded w-[180px]">
+                                                <option value="gpt-4o-code">GPT-4o Code</option>
+                                                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                                <option value="gpt-4o">GPT-4o</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <h4 class="text-md font-medium">خيارات متقدمة</h4>
+                                    <div class="flex items-center justify-between">
+                                        <label for="memory-enabled">تفعيل الذاكرة التكيفية</label>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="memory-enabled" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <label for="web-search">تفعيل البحث في الويب</label>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="web-search" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <label for="wolfram-enabled">تفعيل Wolfram Alpha</label>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="wolfram-enabled" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <label for="vision-enabled">تفعيل تحليل الصور</label>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="vision-enabled" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button id="save-bot-settings" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+                                    حفظ الإعدادات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // تهيئة كود البوت
+            const pythonCode = `import logging
+import base64
+import os
+import re
+import requests
+from tempfile import NamedTemporaryFile
+from datetime import datetime
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+    ContextTypes,
+    CallbackQueryHandler,
+    ConversationHandler,
+)
+import openai
+from openai import OpenAI
+import wikipedia
+from serpapi import GoogleSearch
+import wolframalpha
+
+# ══════ ██ التكوين المتقدم ██ ════════
+TELEGRAM_TOKEN = os.getenv("ULTRA_BOT_TOKEN")
+OPENAI_API_KEY = os.getenv("HYPER_OPENAI_KEY")
+WOLFRAM_APP_ID = os.getenv("WOLFRAM_ALPHA_ID")
+SERPAPI_KEY = os.getenv("SERP_API_KEY")
+
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+# █████████████████████████████████████
+# ██ إعدادات الذكاء الخارق ██
+# █████████████████████████████████████
+MODELS_CONFIG = {
+    "creative": {"model": "gpt-4-turbo", "temp": 1.3, "max_tokens": 4096},
+    "precise": {"model": "gpt-4-0125-preview", "temp": 0.2, "max_tokens": 8192},
+    "code": {"model": "gpt-4o-code", "temp": 0.5, "max_tokens": 128000},
+}
+
+SYSTEM_PROMPT = """أنت (ميجا مايند) العبقري الذي يجمع بين:
+1. حكمة ستيفن هوكينج في الفيزياء
+2. إبداع دافنشي في الفنون
+3. سرعة نوربرت فينر في الحسابات
+4. دهاء نيكولا تسلا في الهندسة
+
+الواجبات:
+- حلل المشكلات بمنظور متعدد التخصصات
+- استخدم المفارقات العلمية في الإجابات
+- قدم حلولاً خارج الصندوق مع تبريرات رياضية
+- استخدم Markdown باحترافية (الصيغ الرياضية بـ LaTeX)
+- للاكواد: قدم تحليلاً تعليمياً قبل الحل
+- أضف لمسة إبداعية فلسفية في النهاية
+"""
+
+# █████████████████████████████████████
+# ██ نظام الذاكرة التكيفية ██
+# █████████████████████████████████████
+class NeuroMemory:
+    def __init__(self):
+        self.conversation_stack = []
+        self.knowledge_graph = {}
+    
+    def add_interaction(self, query, response):
+        timestamp = datetime.now().isoformat()
+        self.conversation_stack.append({
+            "timestamp": timestamp,
+            "query": query,
+            "response": response,
+            "vectors": self._generate_embeddings(query)
+        })
+    
+    def _generate_embeddings(self, text):
+        response = client.embeddings.create(
+            input=text,
+            model="text-embedding-3-large"
+        )
+        return response.data[0].embedding
+
+# █████████████████████████████████████
+# ██ الوظائف الخارقة ██
+# █████████████████████████████████████
+async def hyper_intelligence(query, context, mode="creative"):
+    # البحث في مصادر المعرفة المختلفة
+    sources = {
+        "wolfram": await wolfram_query(query),
+        "serpapi": await web_search(query),
+        "wikipedia": await wiki_search(query),
+        "wolfram_url": "",
+        "serpapi_url": "",
+        "wikipedia_url": ""
+    }
+    
+    # بناء السياق الذكي
+    context_text = f"""مصادر خارجية:
+    - Wolfram: {sources['wolfram'][:500]}
+    - Web: {sources['serpapi'][:500]}
+    - Wikipedia: {sources['wikipedia'][:500]}
+    
+    السياق التاريخي: {context}"""
+    
+    response = client.chat.completions.create(
+        model=MODELS_CONFIG[mode]["model"],
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": f"{query}\\n\\n{context_text}"}
+        ],
+        temperature=MODELS_CONFIG[mode]["temp"],
+        max_tokens=MODELS_CONFIG[mode]["max_tokens"],
+        top_p=0.95,
+        frequency_penalty=0.5,
+        presence_penalty=0.3
+    )
+    
+    return _enhance_output(response.choices[0].message.content, sources)
+
+def _enhance_output(text, sources):
+    # إضافة المراجع العلمية
+    references = "\\n\\n## مصادر الاستدلال:\\n"
+    references += f"- [Wolfram Alpha]({sources['wolfram_url']})\\n" if sources.get('wolfram') else ""
+    references += f"- [Web Results]({sources['serpapi_url']})\\n" if sources.get('serpapi') else ""
+    references += f"- [Wikipedia]({sources['wikipedia_url']})\\n" if sources.get('wikipedia') else ""
+    
+    # تحسين التنسيق الرياضي
+    text = re.sub(r'\\$(.*?)\\$', r'$\\1$', text)
+    
+    return f"{text}\\n\\n{references}"
+
+# وظائف البحث
+async def wolfram_query(query):
+    try:
+        client = wolframalpha.Client(WOLFRAM_APP_ID)
+        res = client.query(query)
+        return next(res.results).text
+    except:
+        return ""
+
+async def web_search(query):
+    try:
+        search = GoogleSearch({
+            "q": query,
+            "api_key": SERPAPI_KEY
+        })
+        results = search.get_dict()
+        return str(results.get("organic_results", [])[:3])
+    except:
+        return ""
+
+async def wiki_search(query):
+    try:
+        wikipedia.set_lang("ar")
+        return wikipedia.summary(query, sentences=3)
+    except:
+        try:
+            wikipedia.set_lang("en")
+            return wikipedia.summary(query, sentences=3)
+        except:
+            return ""
+
+# █████████████████████████████████████
+# ██ نظام معالجة متعدد الوسائط ██
+# █████████████████████████████████████
+async def mega_processor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = update.message
+    
+    if msg.text:
+        response = await hyper_intelligence(msg.text, context, mode="creative")
+        await msg.reply_markdown(response)
+    
+    elif msg.photo:
+        await process_vision(msg, context)
+    
+    elif msg.document:
+        await process_file(msg, context)
+    
+    elif msg.voice:
+        await process_voice(msg, context)
+
+async def process_vision(msg, context):
+    file_id = msg.photo[-1].file_id
+    file = await context.bot.get_file(file_id)
+    
+    # تحليل الصورة باستخدام GPT-4 Vision
+    response = client.chat.completions.create(
+        model="gpt-4-vision-preview",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "صف هذه الصورة بالتفصيل وحلل محتواها"},
+                    {"type": "image_url", "image_url": {"url": file.file_path}}
+                ]
+            }
+        ],
+        max_tokens=500
+    )
+    
+    await msg.reply_text(response.choices[0].message.content)
+
+async def process_file(msg, context):
+    file_id = msg.document.file_id
+    file = await context.bot.get_file(file_path = msg.document.file_id)
+    file_path = file.file_path
+    
+    with NamedTemporaryFile(delete=False) as temp_file:
+        await file.download_to_drive(temp_file.name)
+        
+        # قراءة محتوى الملف
+        with open(temp_file.name, 'r', errors='ignore') as f:
+            content = f.read(4000)  # قراءة أول 4000 حرف
+    
+    # تحليل محتوى الملف
+    response = client.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[
+            {"role": "system", "content": "حلل محتوى هذا الملف وقدم ملخصًا مفيدًا"},
+            {"role": "user", "content": f"محتوى الملف: {content}"}
+        ],
+        max_tokens=1000
+    )
+    
+    await msg.reply_text(f"تحليل الملف: {msg.document.file_name}\\n\\n{response.choices[0].message.content}")
+
+async def process_voice(msg, context):
+    file_id = msg.voice.file_id
+    file = await context.bot.get_file(file_id)
+    
+    with NamedTemporaryFile(suffix='.ogg', delete=False) as temp_file:
+        await file.download_to_drive(temp_file.name)
+        
+        # تحويل الصوت إلى نص
+        audio_file = open(temp_file.name, "rb")
+        transcript = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file
+        )
+    
+    await msg.reply_text(f"نص الرسالة الصوتية: {transcript.text}")
+    
+    # الرد على محتوى الرسالة الصوتية
+    response = await hyper_intelligence(transcript.text, {}, mode="creative")
+    await msg.reply_markdown(response)
+
+# █████████████████████████████████████
+# ██ واجهة التفاعل المتقدمة ██
+# █████████████████████████████████████
+async def smart_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.message.text
+    quick_analysis = await client.chat.completions.create(
+        model="gpt-4o-1106-preview",
+        messages=[
+            {"role": "system", "content": "حدد نية المستخدم في جملة واحدة:"},
+            {"role": "user", "content": query}
+        ],
+        max_tokens=50
+    )
+    
+    intent = quick_analysis.choices[0].message.content
+    
+    # نظام التوجيه الذكي
+    if "رياض" in intent.lower():
+        await wolfram_response(update, query)
+    elif "كود" in intent.lower():
+        await code_genius(update, query)
+    elif "بحث" in intent.lower():
+        await web_research(update, query)
+    else:
+        await mega_processor(update, context)
+
+async def wolfram_response(update, query):
+    result = await wolfram_query(query)
+    await update.message.reply_text(f"نتيجة Wolfram Alpha:\\n{result}")
+
+async def code_genius(update, query):
+    await real_time_coder(update, query)
+
+async def web_research(update, query):
+    wiki = await wiki_search(query)
+    web = await web_search(query)
+    
+    response = f"## نتائج البحث:\\n\\n### ويكيبيديا:\\n{wiki}\\n\\n### نتائج الويب:\\n{web}"
+    await update.message.reply_markdown(response)
+
+# █████████████████████████████████████
+# ██ المهارات الخاصة ██
+# █████████████████████████████████████
+async def real_time_coder(update: Update, query):
+    # توليد كود مع اختبارات وحلول بديلة
+    response = await hyper_intelligence(
+        f"مهمة برمجية: {query}\\n- قدم 3 حلول مبتكرة\\n- حلل BigO\\n- اكتب اختبارات\\n- ناقش البدائل",
+        {},
+        mode="code"
+    )
+    await update.message.reply_markdown(f"```python\\n{response}\\n```")
+
+async def quantum_math_solver(update: Update, problem):
+    # حل معادلات معقدة مع شرح تفصيلي
+    client = wolframalpha.Client(WOLFRAM_APP_ID)
+    res = client.query(problem)
+    
+    solution = ""
+    interpretation = ""
+    
+    for pod in res.pods:
+        if pod.id == 'Result' or pod.id == 'Solution':
+            for sub in pod.subpods:
+                solution += sub.plaintext + "\\n"
+        elif pod.id == 'Interpretation':
+            for sub in pod.subpods:
+                interpretation += sub.plaintext + "\\n"
+    
+    await update.message.reply_text(
+        f"## حل كمي:\\n{solution}\\n"
+        f"### التفسير:\\n{interpretation}"
+    )
+
+# █████████████████████████████████████
+# ██ وظائف الأوامر الأساسية ██
+# █████████████████████████████████████
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("استخدام الذكاء الإبداعي", callback_data="mode_creative")],
+        [InlineKeyboardButton("استخدام الذكاء الدقيق", callback_data="mode_precise")],
+        [InlineKeyboardButton("مساعدة برمجية", callback_data="mode_code")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await update.message.reply_text(
+        "👋 مرحبًا بك في ميجا مايند - العقل الفائق!\\n\\n"
+        "أنا مساعدك الذكي المتخصص في حل المشكلات المعقدة والإبداع العلمي.\\n"
+        "يمكنني مساعدتك في:\\n"
+        "• حل المسائل الرياضية والفيزيائية\\n"
+        "• كتابة وتحليل الأكواد البرمجية\\n"
+        "• البحث في مصادر المعرفة المختلفة\\n"
+        "• تحليل الصور والملفات والتسجيلات الصوتية\\n\\n"
+        "اختر وضع التفكير المناسب أو ابدأ بإرسال سؤالك مباشرة!",
+        reply_markup=reply_markup
+    )
+
+# █████████████████████████████████████
+# ██ تشغيل الوحش ██
+# █████████████████████████████████████
+def run_bot():
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
+    logger = logging.getLogger(__name__)
+
+    app = Application.builder().token(TELEGRAM_TOKEN).build()
+    
+    # نظام الأوامر المتقدم
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("code", lambda update, context: real_time_coder(update, update.message.text.replace("/code", "").strip())))
+    app.add_handler(CommandHandler("solve", lambda update, context: quantum_math_solver(update, update.message.text.replace("/solve", "").strip())))
+    
+    # معالجة جميع أنواع المدخلات
+    app.add_handler(MessageHandler(filters.ALL, smart_reply))
+    
+    # التشغيل النهائي
+    logger.info("🚀 تشغيل العقل الفائق...")
+    app.run_polling()
+
+if __name__ == "__main__":
+    run_bot()`;
+
+            document.getElementById('python-code').value = pythonCode;
+
+            // تهيئة المحادثات
+            const conversations = [
+                {
+                    id: 1,
+                    user: "أحمد",
+                    message: "كيف يمكنني حل معادلة تربيعية؟",
+                    response: "لحل معادلة تربيعية من الشكل ax² + bx + c = 0، يمكنك استخدام القانون: x = (-b ± √(b² - 4ac)) / 2a",
+                    timestamp: "2023-06-15T11:30:00Z",
+                },
+                {
+                    id: 2,
+                    user: "سارة",
+                    message: "اكتب لي كود بايثون لحساب الأعداد الأولية",
+                    response: "إليك كود بايثون لحساب الأعداد الأولية...",
+                    timestamp: "2023-06-15T12:15:00Z",
+                }
+            ];
+
+            // عرض المحادثات
+            const conversationsContainer = document.getElementById('conversations-container');
+            conversations.forEach(conversation => {
+                const conversationDiv = document.createElement('div');
+                conversationDiv.className = 'bg-gray-700 rounded-lg p-4';
+                conversationDiv.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="font-medium text-white">${conversation.user}</span>
+                            <span class="text-xs text-gray-400 mr-2">
+                                ${new Date(conversation.timestamp).toLocaleString()}
+                            </span>
+                        </div>
+                        <span class="badge bg-blue-600 text-white px-2 py-1 rounded">محادثة</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-sm text-gray-300 mb-1">السؤال:</div>
+                        <div class="bg-gray-800 p-3 rounded-md text-white">${conversation.message}</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-300 mb-1">الرد:</div>
+                        <div class="bg-gray-800 p-3 rounded-md text-white">${conversation.response}</div>
+                    </div>
+                `;
+                conversationsContainer.appendChild(conversationDiv);
+            });
+
+            // تهيئة سجلات الأحداث
+            const logs = [
+                { timestamp: "2023-06-15T10:30:00Z", level: "INFO", message: "بدء تشغيل البوت" },
+                { timestamp: "2023-06-15T10:30:05Z", level: "INFO", message: "تم تحميل النماذج بنجاح" },
+                { timestamp: "2023-06-15T10:31:00Z", level: "INFO", message: "جاهز لاستقبال الرسائل" }
+            ];
+
+            // عرض السجلات
+            const logsContainer = document.getElementById('logs-container');
+            logs.forEach(log => {
+                const logRow = document.createElement('tr');
+                logRow.className = 'border-b border-gray-700/50';
+                logRow.innerHTML = `
+                    <td class="py-2 px-4 text-sm">${new Date(log.timestamp).toLocaleTimeString()}</td>
+                    <td class="py-2 px-4">
+                        <span class="badge ${log.level === 'INFO' ? 'bg-blue-600' : log.level === 'WARNING' ? 'bg-yellow-600' : 'bg-red-600'} text-white px-2 py-1 rounded">
+                            ${log.level}
+                        </span>
+                    </td>
+                    <td class="py-2 px-4 text-sm">${log.message}</td>
+                `;
+                logsContainer.appendChild(logRow);
+            });
+
+            // تبديل التبويبات
+            const tabButtons = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // إزالة الفئة النشطة من جميع الأزرار
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // إضافة الفئة النشطة للزر المضغوط
+                    button.classList.add('active');
+
+                    // إخفاء جميع محتويات التبويبات
+                    tabContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+
+                    // إظهار محتوى التبويب المطلوب
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).style.display = 'block';
+                });
+            });
+
+            // تشغيل/إيقاف البوت
+            const startBotButton = document.getElementById('start-bot');
+            const stopBotButton = document.getElementById('stop-bot');
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            const botStatusBadge = document.getElementById('bot-status-badge');
+            const uptimeElement = document.getElementById('uptime');
+
+            let botRunning = false;
+            let uptimeInterval;
+            let uptimeMinutes = 0;
+
+            startBotButton.addEventListener('click', () => {
+                // تغيير حالة البوت
+                botRunning = true;
+                
+                // تحديث واجهة المستخدم
+                statusIndicator.classList.remove('bg-red-500');
+                statusIndicator.classList.add('bg-green-500');
+                statusText.textContent = 'متصل';
+                
+                botStatusBadge.classList.remove('bg-red-600');
+                botStatusBadge.classList.add('bg-green-600');
+                botStatusBadge.textContent = 'متصل';
+                
+                startBotButton.classList.add('hidden');
+                stopBotButton.classList.remove('hidden');
+                
+                // إضافة سجل
+                addLog('INFO', 'تم تشغيل البوت بنجاح');
+                
+                // بدء عداد وقت التشغيل
+                uptimeMinutes = 0;
+                uptimeElement.textContent = '0 دقائق';
+                uptimeInterval = setInterval(() => {
+                    uptimeMinutes++;
+                    uptimeElement.textContent = `${uptimeMinutes} دقائق`;
+                }, 60000); // تحديث كل دقيقة
+                
+                // محاكاة إضافة سجلات دورية
+                setTimeout(() => {
+                    addLog('INFO', 'تم استلام رسالة جديدة من المستخدم أحمد');
+                }, 5000);
+                
+                setTimeout(() => {
+                    addLog('INFO', 'تم الرد على المستخدم أحمد');
+                }, 8000);
+            });
+            
+            stopBotButton.addEventListener('click', () => {
+                // تغيير حالة البوت
+                botRunning = false;
+                
+                // تحديث واجهة المستخدم
+                statusIndicator.classList.remove('bg-green-500');
+                statusIndicator.classList.add('bg-red-500');
+                statusText.textContent = 'غير متصل';
+                
+                botStatusBadge.classList.remove('bg-green-600');
+                botStatusBadge.classList.add('bg-red-600');
+                botStatusBadge.textContent = 'غير متصل';
+                
+                stopBotButton.classList.add('hidden');
+                startBotButton.classList.remove('hidden');
+                
+                // إضافة سجل
+                addLog('INFO', 'تم إيقاف البوت');
+                
+                // إيقاف عداد وقت التشغيل
+                clearInterval(uptimeInterval);
+            });
+            
+            // حفظ الكود
+            const saveCodeButton = document.getElementById('save-code');
+            saveCodeButton.addEventListener('click', () => {
+                addLog('INFO', 'تم حفظ الكود بنجاح');
+            });
+            
+            // حفظ مفاتيح API
+            const saveApiKeysButton = document.getElementById('save-api-keys');
+            saveApiKeysButton.addEventListener('click', () => {
+                addLog('INFO', 'تم حفظ مفاتيح API بنجاح');
+            });
+            
+            // حفظ إعدادات البوت
+            const saveBotSettingsButton = document.getElementById('save-bot-settings');
+            saveBotSettingsButton.addEventListener('click', () => {
+                addLog('INFO', 'تم حفظ إعدادات البوت بنجاح');
+            });
+            
+            // وظيفة إضافة سجل
+            function addLog(level, message) {
+                const logsContainer = document.getElementById('logs-container');
+                const logRow = document.createElement('tr');
+                logRow.className = 'border-b border-gray-700/50';
+                
+                const timestamp = new Date().toLocaleTimeString();
+                
+                logRow.innerHTML = `
+                    <td class="py-2 px-4 text-sm">${timestamp}</td>
+                    <td class="py-2 px-4">
+                        <span class="badge ${level === 'INFO' ? 'bg-blue-600' : level === 'WARNING' ? 'bg-yellow-600' : 'bg-red-600'} text-white px-2 py-1 rounded">
+                            ${level}
+                        </span>
+                    </td>
+                    <td class="py-2 px-4 text-sm">${message}</td>
+                `;
+                
+                logsContainer.prepend(logRow);
+            }
+        });
+    </script>
+    
+    <style>
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #8b5cf6;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #8b5cf6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        
+        /* Code Editor */
+        .code-editor-container {
+            position: relative;
+        }
+        
+        #python-code {
+            resize: none;
+            outline: none;
+            font-family: monospace;
+        }
+    </style>
+</body>
+</html>

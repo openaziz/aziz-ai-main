@@ -1,0 +1,40 @@
+/* إضافة أنماط للتحميل */
+.loading-spinner {
+  border: 3px solid rgba(255, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #ff2a2a;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.mysterious-bg {
+  background: linear-gradient(135deg, #0f0a0a 0%, #1d0500 100%);
+}
+
+.markdown-content {
+  color: #ff9999;
+}
+
+.markdown-content code {
+  background-color: #3b0d00;
+  color: #ff9999;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 85%;
+}
+
+.markdown-content pre {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}

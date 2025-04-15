@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنصيب كالي هنتر على الهاتف - AzizAI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tutorial-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .tutorial-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tutorial-header img {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-section {
+            margin-bottom: 3rem;
+        }
+        
+        .tutorial-section h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-container {
+            display: flex;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .step-image {
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .note-box {
+            background-color: rgba(139, 92, 246, 0.1);
+            border-right: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+        
+        .warning-box {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-right: 4px solid var(--error-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+        
+        .code-box {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            font-family: "Courier New", Courier, monospace;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .course-card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dark-theme .course-card {
+            background-color: var(--dark-surface);
+            border: 1px solid var(--dark-border);
+        }
+        
+        .light-theme .course-card {
+            background-color: var(--light-surface);
+            border: 1px solid var(--light-border);
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .course-content {
+            padding: 1.5rem;
+        }
+        
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .course-description {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .course-rating {
+            display: flex;
+            align-items: center;
+        }
+        
+        .course-rating i {
+            color: #f59e0b;
+            margin-left: 0.25rem;
+        }
+        
+        .course-price {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .course-button {
+            display: block;
+            text-align: center;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            margin-top: 1rem;
+        }
+        
+        .course-button:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .step-container {
+                flex-direction: column;
+            }
+            
+            .step-number {
+                margin-bottom: 1rem;
+                margin-left: 0;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AzizAI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="chat.html"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="code-editor.html"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="kali-hunter.html" class="active"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="#"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="#"><i class="fas fa-database"></i> المستودعات</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>تنصيب كالي هنتر على الهاتف</h1>
+                <div class="header-actions">
+                    <button id="settings-button" class="settings-button">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="tutorial-container">
+                <div class="tutorial-header">
+                    <img src="images/kali-logo.png" alt="شعار كالي لينكس">
+                    <h1>الدليل الشامل لتنصيب وإعداد كالي هنتر على الهاتف</h1>
+                    <p>دليل خطوة بخطوة لتثبيت واستخدام أدوات اختبار الاختراق على هاتفك المحمول</p>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>مقدمة عن كالي هنتر</h2>
+                    <p>كالي هنتر (Kali Hunter) هو نظام تشغيل مبني على نواة لينكس ومشتق من توزيعة كالي لينكس الشهيرة، ولكنه مصمم خصيصًا للعمل على الأجهزة المحمولة. يوفر كالي هنتر مجموعة واسعة من أدوات اختبار الاختراق والأمان السيبراني التي يمكن استخدامها مباشرة من هاتفك الذكي.</p>
+                    
+                    <div class="note-box">
+                        <strong>ملاحظة هامة:</strong> يجب استخدام كالي هنتر وأدواته للأغراض القانونية والأخلاقية فقط، مثل اختبار أنظمتك الخاصة أو الأنظمة التي حصلت على إذن صريح لاختبارها. استخدام هذه الأدوات بدون إذن قد يكون غير قانوني في العديد من البلدان.
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>المتطلبات الأساسية</h2>
+                    <ul>
+                        <li>هاتف أندرويد (يفضل أن يكون الإصدار 7.0 أو أعلى)</li>
+                        <li>مساحة تخزين لا تقل عن 5 جيجابايت</li>
+                        <li>ذاكرة وصول عشوائي (RAM) لا تقل عن 3 جيجابايت</li>
+                        <li>صلاحيات الروت (Root) على الهاتف (اختياري ولكن موصى به)</li>
+                        <li>تطبيق Termux مثبت على الهاتف</li>
+                        <li>اتصال إنترنت مستقر</li>
+                    </ul>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>خطوات التثبيت</h2>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>تثبيت تطبيق Termux</h3>
+                            <p>أولاً، قم بتثبيت تطبيق Termux من متجر F-Droid أو من خلال تنزيل ملف APK من الموقع الرسمي.</p>
+                            <div class="step-image">
+                                <img src="images/termux-install.jpg" alt="تثبيت تطبيق Termux">
+                            </div>
+                            <div class="note-box">
+                                <strong>ملاحظة:</strong> يُفضل تثبيت Termux من متجر F-Droid بدلاً من Google Play، حيث أن إصدار Google Play قد لا يتلقى تحديثات منتظمة.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>تحديث حزم Termux</h3>
+                            <p>بعد تثبيت Termux، افتح التطبيق وقم بتحديث الحزم باستخدام الأوامر التالية:</p>
+                            <div class="code-box">
+                                $ apt update
+                                $ apt upgrade -y
+                            </div>
+                            <p>انتظر حتى تكتمل عملية التحديث. قد يستغرق هذا بعض الوقت اعتمادًا على سرعة الإنترنت لديك.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>تثبيت الحزم الأساسية</h3>
+                            <p>قم بتثبيت الحزم الأساسية المطلوبة لتشغيل كالي هنتر:</p>
+                            <div class="code-box">
+                                $ pkg install wget curl git python openssh -y
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>تنزيل سكربت تثبيت كالي هنتر</h3>
+                            <p>قم بتنزيل سكربت التثبيت الخاص بكالي هنتر:</p>
+                            <div class="code-box">
+                                $ wget https://raw.githubusercontent.com/Hax4us/Nethunter-In-Termux/master/kalinethunter
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>تعيين صلاحيات التنفيذ للسكربت</h3>
+                            <p>قم بتعيين صلاحيات التنفيذ للسكربت الذي قمت بتنزيله:</p>
+                            <div class="code-box">
+                                $ chmod +x kalinethunter
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3>تشغيل سكربت التثبيت</h3>
+                            <p>قم بتشغيل سكربت التثبيت:</p>
+                            <div class="code-box">
+                                $ ./kalinethunter
+                            </div>
+                            <p>سيبدأ السكربت في تنزيل وتثبيت كالي هنتر. قد تستغرق هذه العملية وقتًا طويلاً (من 30 دقيقة إلى ساعة) اعتمادًا على سرعة الإنترنت وأداء هاتفك.</p>
+                            <div class="warning-box">
+                                <strong>تحذير:</strong> تأكد من أن هاتفك متصل بالشاحن وأن لديك اتصال إنترنت مستقر خلال عملية التثبيت.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <h3>بدء تشغيل كالي هنتر</h3>
+                            <p>بعد اكتمال التثبيت، يمكنك بدء تشغيل كالي هنتر باستخدام الأمر التالي:</p>
+                            <div class="code-box">
+                                $ ./start-kali.sh
+                            </div>
+                            <p>سترى واجهة سطر أوامر كالي لينكس. يمكنك الآن استخدام أدوات كالي لينكس على هاتفك.</p>
+                            <div class="step-image">
+                                <img src="images/kali-running.jpg" alt="كالي هنتر قيد التشغيل">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>تثبيت واجهة المستخدم الرسومية (اختياري)</h2>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>تثبيت VNC Server</h3>
+                            <p>لتثبيت واجهة المستخدم الرسومية، يجب أولاً تثبيت VNC Server داخل بيئة كالي هنتر:</p>
+                            <div class="code-box">
+                                $ apt update
+                                $ apt install xfce4 xfce4-terminal tigervnc-standalone-server -y
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>إعداد كلمة مرور VNC</h3>
+                            <p>قم بإعداد كلمة مرور لخادم VNC:</p>
+                            <div class="code-box">
+                                $ vncpasswd
+                            </div>
+                            <p>أدخل كلمة المرور التي تريدها وقم بتأكيدها.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>إنشاء ملف إعدادات VNC</h3>
+                            <p>قم بإنشاء ملف إعدادات لـ VNC:</p>
+                            <div class="code-box">
+                                $ mkdir -p ~/.vnc
+                                $ echo "#!/bin/bash
+                                xrdb $HOME/.Xresources
+                                startxfce4 &" > ~/.vnc/xstartup
+                                $ chmod +x ~/.vnc/xstartup
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>تشغيل خادم VNC</h3>
+                            <p>قم بتشغيل خادم VNC:</p>
+                            <div class="code-box">
+                                $ vncserver -localhost
+                            </div>
+                            <p>سيتم تشغيل خادم VNC على المنفذ 5901 افتراضيًا.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>تثبيت عميل VNC على هاتفك</h3>
+                            <p>قم بتثبيت تطبيق عميل VNC على هاتفك، مثل VNC Viewer من متجر التطبيقات.</p>
+                            <div class="step-image">
+                                <img src="images/vnc-viewer.jpg" alt="تطبيق VNC Viewer">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3>الاتصال بخادم VNC</h3>
+                            <p>افتح تطبيق VNC Viewer وأدخل عنوان الاتصال: <code>localhost:5901</code></p>
+                            <p>أدخل كلمة المرور التي قمت بإعدادها سابقًا.</p>
+                            <p>ستظهر لك واجهة سطح المكتب الرسومية لكالي لينكس.</p>
+                            <div class="step-image">
+                                <img src="images/kali-gui.jpg" alt="واجهة كالي لينكس الرسومية">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>أدوات اختبار الاختراق الأساسية</h2>
+                    <p>بعد تثبيت كالي هنتر، يمكنك تثبيت واستخدام العديد من أدوات اختبار الاختراق. إليك بعض الأدوات الأساسية:</p>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Nmap - أداة فحص الشبكات</h3>
+                            <p>لتثبيت Nmap:</p>
+                            <div class="code-box">
+                                $ apt install nmap -y
+                            </div>
+                            <p>مثال على استخدام Nmap لفحص شبكة:</p>
+                            <div class="code-box">
+                                $ nmap -sV 192.168.1.0/24
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Metasploit Framework</h3>
+                            <p>لتثبيت Metasploit:</p>
+                            <div class="code-box">
+                                $ apt install metasploit-framework -y
+                            </div>
+                            <p>لتشغيل Metasploit:</p>
+                            <div class="code-box">
+                                $ msfconsole
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Wireshark - محلل حزم الشبكة</h3>
+                            <p>لتثبيت Wireshark (يتطلب واجهة رسومية):</p>
+                            <div class="code-box">
+                                $ apt install wireshark -y
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Aircrack-ng - أدوات اختبار أمان الشبكات اللاسلكية</h3>
+                            <p>لتثبيت Aircrack-ng:</p>
+                            <div class="code-box">
+                                $ apt install aircrack-ng -y
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Hydra - أداة كسر كلمات المرور</h3>
+                            <p>لتثبيت Hydra:</p>
+                            <div class="code-box">
+                                $ apt install hydra -y
+                            </div>
+                            <p>مثال على استخدام Hydra:</p>
+                            <div class="code-box">
+                                $ hydra -l admin -P /path/to/wordlist.txt ssh://192.168.1.1
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>استكشاف الأخطاء وإصلاحها</h2>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>مشكلة: فشل تثبيت كالي هنتر</h3>
+                            <p>إذا فشل تثبيت كالي هنتر، جرب الخطوات التالية:</p>
+                            <ul>
+                                <li>تأكد من تحديث Termux باستخدام <code>apt update && apt upgrade -y</code></li>
+                                <li>تأكد من وجود مساحة كافية على هاتفك</li>
+                                <li>حاول إعادة تشغيل الهاتف وتجربة التثبيت مرة أخرى</li>
+                                <li>جرب استخدام إصدار أقدم من سكربت التثبيت</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>مشكلة: خطأ في تشغيل VNC</h3>
+                            <p>إذا واجهت مشاكل في تشغيل VNC، جرب:</p>
+                            <ul>
+                                <li>إيقاف خادم VNC الحالي: <code>vncserver -kill :1</code></li>
+                                <li>إعادة إنشاء ملف xstartup</li>
+                                <li>التأكد من تثبيت جميع الحزم المطلوبة: <code>apt install xfce4 xfce4-terminal tigervnc-standalone-server -y</code></li>
+                                <li>تجربة منفذ مختلف: <code>vncserver -localhost :2</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>مشكلة: أدوات لا تعمل بشكل صحيح</h3>
+                            <p>إذا كانت بعض الأدوات لا تعمل بشكل صحيح:</p>
+                            <ul>
+                                <li>تأكد من تحديث قاعدة بيانات الحزم: <code>apt update</code></li>
+                                <li>تأكد من تثبيت جميع التبعيات المطلوبة</li>
+                                <li>تحقق من وجود صلاحيات الروت إذا كانت الأداة تتطلب ذلك</li>
+                                <li>تحقق من توافق الأداة مع الأجهزة المحمولة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>دورات اختبار الاختراق للهواتف المحمولة</h2>
+                    <p>لتعزيز مهاراتك في مجال اختبار الاختراق على الهواتف المحمولة، إليك بعض الدورات التدريبية المميزة:</p>
+                    
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="images/course-mobile-pentest.jpg" alt="دورة اختبار اختراق الهواتف المحمولة">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">اختبار اختراق تطبيقات الهواتف المحمولة</div>
+                                <div class="course-description">تعلم كيفية اكتشاف وتحديد نقاط الضعف في تطبيقات Android و iOS باستخدام أدوات كالي لينكس.</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        4.5 (120 تقييم)
+                                    </div>
+                                    <div class="course-price">$49.99</div>
+                                </div>
+                                <a href="#" class="course-button">عرض الدورة</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="images/course-wireless.jpg" alt="دورة اختبار أمان الشبكات اللاسلكية">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">اختبار أمان الشبكات اللاسلكية من الهاتف</div>
+                                <div class="course-description">تعلم كيفية استخدام هاتفك لاختبار أمان شبكات WiFi واكتشاف الثغرات الأمنية.</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        5.0 (85 تقييم)
+                                    </div>
+                                    <div class="course-price">$39.99</div>
+                                </div>
+                                <a href="#" class="course-button">عرض الدورة</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="images/course-metasploit.jpg" alt="دورة Metasploit على الهاتف">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">إتقان Metasploit على الهاتف المحمول</div>
+                                <div class="course-description">دورة متقدمة في استخدام إطار عمل Metasploit على الهاتف المحمول لاختبار الاختراق.</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        4.0 (62 تقييم)
+                                    </div>
+                                    <div class="course-price">$59.99</div>
+                                </div>
+                                <a href="#" class="course-button">عرض الدورة</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="images/course-social.jpg" alt="دورة الهندسة الاجتماعية">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">الهندسة الاجتماعية باستخدام الهاتف المحمول</div>
+                                <div class="course-description">تعلم تقنيات الهندسة الاجتماعية وكيفية تنفيذها باستخدام أدوات على هاتفك المحمول.</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        4.7 (95 تقييم)
+                                    </div>
+                                    <div class="course-price">$44.99</div>
+                                </div>
+                                <a href="#" class="course-button">عرض الدورة</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h2>الخلاصة</h2>
+                    <p>تهانينا! لقد نجحت الآن في تثبيت وإعداد كالي هنتر على هاتفك المحمول. يمكنك الآن استخدام مجموعة واسعة من أدوات اختبار الاختراق والأمان السيبراني مباشرة من هاتفك.</p>
+                    
+                    <p>تذكر دائمًا استخدام هذه الأدوات بشكل أخلاقي وقانوني، واحرص على الحصول على إذن صريح قبل اختبار أي نظام لا تملكه.</p>
+                    
+                    <div class="note-box">
+                        <strong>ملاحظة:</strong> قم بتحديث أدوات كالي هنتر بانتظام باستخدام الأمر <code>apt update && apt upgrade -y</code> للحصول على أحدث الميزات وإصلاحات الأمان.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الإعدادات</h2>
+                <button id="close-settings" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>إعدادات العرض</h3>
+                    <div class="setting-item">
+                        <label for="theme-select">السمة:</label>
+                        <select id="theme-select">
+                            <option value="dark">داكنة</option>
+                            <option value="light">فاتحة</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="font-size">حجم الخط:</label>
+                        <select id="font-size">
+                            <option value="small">صغير</option>
+                            <option value="medium" selected>متوسط</option>
+                            <option value="large">كبير</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-settings" class="save-button">حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

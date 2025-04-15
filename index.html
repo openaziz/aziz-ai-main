@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عبدالعزيز AI - بناء المشاريع بالذكاء الاصطناعي</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .primary-button {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .primary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(79, 172, 254, 0.6);
+        }
+        
+        .secondary-button {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #4facfe;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .file-upload-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .chat-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .chat-input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .features-section {
+            padding: 4rem 2rem;
+            background: #0f0f1a;
+            color: #fff;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4facfe;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="/images/logo.png" alt="عبدالعزيز AI" width="40" height="40">
+                    <span>عبدالعزيز AI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat.html"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/repositories.html"><i class="fas fa-database"></i> المستودعات</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="hero-section">
+                <h1 class="hero-title">عبدالعزيز AI</h1>
+                <p class="hero-subtitle">مساعدك الذكي لبناء المشاريع البرمجية بسرعة وكفاءة</p>
+                
+                <div class="action-buttons">
+                    <button id="start-chat-btn" class="action-button primary-button">
+                        <i class="fas fa-comment"></i>
+                        ابدأ المحادثة
+                    </button>
+                    <button id="upload-file-btn" class="action-button secondary-button">
+                        <i class="fas fa-file-upload"></i>
+                        رفع ملف ZIP
+                    </button>
+                </div>
+                
+                <div id="chat-container" class="chat-container">
+                    <h3>ماذا تريد أن نبني اليوم؟</h3>
+                    <input type="text" id="project-description" class="chat-input" placeholder="اكتب وصف المشروع الذي تريد بناءه...">
+                    <button id="submit-description" class="action-button primary-button">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال
+                    </button>
+                </div>
+                
+                <div id="file-upload-container" class="file-upload-container">
+                    <h3>رفع ملف ZIP</h3>
+                    <label for="zip-file-upload" class="action-button secondary-button">
+                        <i class="fas fa-file-upload"></i>
+                        اختر ملف
+                    </label>
+                    <input type="file" id="zip-file-upload" accept=".zip" style="display: none;">
+                    <p id="selected-file-name" style="margin-top: 1rem;"></p>
+                    <button id="submit-file" class="action-button primary-button" style="margin-top: 1rem; display: none;">
+                        <i class="fas fa-paper-plane"></i>
+                        رفع الملف
+                    </button>
+                </div>
+            </section>
+            
+            <section class="features-section">
+                <h2 style="text-align: center; margin-bottom: 3rem;">مميزات عبدالعزيز AI</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">بناء سريع</h3>
+                        <p class="feature-description">قم ببناء مشاريعك البرمجية بسرعة فائقة باستخدام الذكاء الاصطناعي المتقدم.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="feature-title">دعم متعدد اللغات</h3>
+                        <p class="feature-description">يدعم العديد من لغات البرمجة مثل JavaScript، Python، Java، وغيرها الكثير.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">أدوات أمان متقدمة</h3>
+                        <p class="feature-description">استخدم أدوات كالي هنتر للاختبار والتحقق من أمان تطبيقاتك.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3 class="feature-title">تكامل مع GitHub</h3>
+                        <p class="feature-description">تكامل سلس مع مستودعات GitHub لإدارة مشاريعك بكفاءة.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="/js/config.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startChatBtn = document.getElementById('start-chat-btn');
+            const uploadFileBtn = document.getElementById('upload-file-btn');
+            const chatContainer = document.getElementById('chat-container');
+            const fileUploadContainer = document.getElementById('file-upload-container');
+            const zipFileUpload = document.getElementById('zip-file-upload');
+            const selectedFileName = document.getElementById('selected-file-name');
+            const submitFileBtn = document.getElementById('submit-file');
+            const submitDescriptionBtn = document.getElementById('submit-description');
+            const projectDescription = document.getElementById('project-description');
+            
+            startChatBtn.addEventListener('click', function() {
+                chatContainer.style.display = 'block';
+                fileUploadContainer.style.display = 'none';
+            });
+            
+            uploadFileBtn.addEventListener('click', function() {
+                fileUploadContainer.style.display = 'block';
+                chatContainer.style.display = 'none';
+            });
+            
+            zipFileUpload.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    selectedFileName.textContent = 'الملف المختار: ' + this.files[0].name;
+                    submitFileBtn.style.display = 'block';
+                } else {
+                    selectedFileName.textContent = '';
+                    submitFileBtn.style.display = 'none';
+                }
+            });
+            
+            submitFileBtn.addEventListener('click', function() {
+                if (zipFileUpload.files.length > 0) {
+                    // Here you would handle the file upload
+                    // For now, we'll just redirect to the chat page
+                    window.location.href = '/chat.html';
+                }
+            });
+            
+            submitDescriptionBtn.addEventListener('click', function() {
+                if (projectDescription.value.trim() !== '') {
+                    // Here you would handle the project description
+                    // For now, we'll just redirect to the chat page with the description as a query parameter
+                    window.location.href = '/chat.html?description=' + encodeURIComponent(projectDescription.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

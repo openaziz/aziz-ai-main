@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المستودعات - عبدالعزيز AI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .repos-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .repos-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .repos-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .repos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .repo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .repo-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .repo-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4facfe;
+        }
+        
+        .repo-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .repo-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .repo-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .repo-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .repo-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .primary-button {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+        }
+        
+        .primary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .secondary-button {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #4facfe;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(79, 172, 254, 0.1);
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #4facfe;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .filter-select {
+            padding: 0 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>عبدالعزيز AI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat.html"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/repositories.html" class="active"><i class="fas fa-database"></i> المستودعات</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="repos-section">
+                <div class="repos-header">
+                    <h1 class="repos-title">مستودعات GitHub</h1>
+                    <p>استعرض وتفاعل مع مستودعاتنا على GitHub</p>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="ابحث عن مستودع...">
+                    <select id="filter-select" class="filter-select">
+                        <option value="all">جميع المستودعات</option>
+                        <option value="stars">الأكثر نجومًا</option>
+                        <option value="updated">آخر تحديث</option>
+                        <option value="forks">الأكثر تفريعًا</option>
+                    </select>
+                </div>
+                
+                <div id="repos-container" class="repos-grid">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="/js/config.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reposContainer = document.getElementById('repos-container');
+            const searchInput = document.getElementById('search-input');
+            const filterSelect = document.getElementById('filter-select');
+            
+            let allRepos = [];
+            
+            // Fetch repositories from GitHub API
+            fetch('https://api.github.com/users/openaziz/repos')
+                .then(response => response.json())
+                .then(repos => {
+                    allRepos = repos;
+                    displayRepos(repos);
+                })
+                .catch(error => {
+                    console.error('Error fetching repositories:', error);
+                    reposContainer.innerHTML = `
+                        <div style="text-align: center; grid-column: 1 / -1;">
+                            <p>حدث خطأ أثناء جلب المستودعات. يرجى المحاولة مرة أخرى لاحقًا.</p>
+                        </div>
+                    `;
+                });
+            
+            // Display repositories
+            function displayRepos(repos) {
+                if (repos.length === 0) {
+                    reposContainer.innerHTML = `
+                        <div style="text-align: center; grid-column: 1 / -1;">
+                            <p>لا توجد مستودعات متاحة حاليًا.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                reposContainer.innerHTML = repos.map(repo => `
+                    <div class="repo-card">
+                        <h3 class="repo-name">${repo.name}</h3>
+                        <p class="repo-description">${repo.description || 'لا يوجد وصف متاح.'}</p>
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <i class="fas fa-star"></i>
+                                <span>${repo.stargazers_count}</span>
+                            </div>
+                            <div class="repo-stat">
+                                <i class="fas fa-code-branch"></i>
+                                <span>${repo.forks_count}</span>
+                            </div>
+                            <div class="repo-stat">
+                                <i class="fas fa-circle" style="color: ${getLanguageColor(repo.language)}"></i>
+                                <span>${repo.language || 'غير محدد'}</span>
+                            </div>
+                        </div>
+                        <div class="repo-actions">
+                            <a href="${repo.html_url}" target="_blank" class="repo-button primary-button">
+                                <i class="fas fa-code"></i>
+                                عرض الكود
+                            </a>
+                            <a href="${repo.html_url}/issues" target="_blank" class="repo-button secondary-button">
+                                <i class="fas fa-exclamation-circle"></i>
+                                المشكلات
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Filter repositories based on search input
+            searchInput.addEventListener('input', filterRepos);
+            filterSelect.addEventListener('change', filterRepos);
+            
+            function filterRepos() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filterValue = filterSelect.value;
+                
+                let filteredRepos = allRepos.filter(repo => 
+                    repo.name.toLowerCase().includes(searchTerm) || 
+                    (repo.description && repo.description.toLowerCase().includes(searchTerm))
+                );
+                
+                // Sort repositories based on filter
+                switch (filterValue) {
+                    case 'stars':
+                        filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+                        break;
+                    case 'updated':
+                        filteredRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+                        break;
+                    case 'forks':
+                        filteredRepos.sort((a, b) => b.forks_count - a.forks_count);
+                        break;
+                }
+                
+                displayRepos(filteredRepos);
+            }
+            
+            // Get color for programming language
+            function getLanguageColor(language) {
+                const colors = {
+                    'JavaScript': '#f1e05a',
+                    'Python': '#3572A5',
+                    'Java': '#b07219',
+                    'C#': '#178600',
+                    'PHP': '#4F5D95',
+                    'TypeScript': '#2b7489',
+                    'HTML': '#e34c26',
+                    'CSS': '#563d7c',
+                    'Ruby': '#701516',
+                    'Go': '#00ADD8'
+                };
+                
+                return colors[language] || '#4facfe';
+            }
+        });
+    </script>
+</body>
+</html>

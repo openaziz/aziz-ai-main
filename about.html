@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>من نحن - عبدالعزيز AI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .about-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .about-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .about-text {
+            line-height: 1.8;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .team-section {
+            padding: 4rem 2rem;
+            background: #0f0f1a;
+        }
+        
+        .team-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .team-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .member-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            border: 3px solid #4facfe;
+        }
+        
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-role {
+            color: #4facfe;
+            margin-bottom: 1rem;
+        }
+        
+        .member-bio {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+        
+        .github-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            text-align: center;
+        }
+        
+        .github-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .github-description {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+        
+        .github-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .github-stat {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            min-width: 200px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4facfe;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .github-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .github-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(79, 172, 254, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>عبدالعزيز AI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat.html"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/about.html" class="active"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/repositories.html"><i class="fas fa-database"></i> المستودعات</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="about-section">
+                <div class="about-header">
+                    <h1 class="about-title">من نحن</h1>
+                    <p>تعرف على فريق عبدالعزيز AI ورؤيتنا</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>مهمتنا</h2>
+                        <p>
+                            في عبدالعزيز AI، نسعى لتمكين المطورين والمبدعين من بناء مشاريعهم البرمجية بسرعة وكفاءة باستخدام أحدث تقنيات الذكاء الاصطناعي. نؤمن بأن التكنولوجيا يجب أن تكون متاحة للجميع، وأن الإبداع لا ينبغي أن يكون محدودًا بالمعرفة التقنية.
+                        </p>
+                        
+                        <h2>رؤيتنا</h2>
+                        <p>
+                            نطمح لبناء منصة متكاملة تجمع بين قوة الذكاء الاصطناعي وسهولة الاستخدام، لتمكين المستخدمين من تحويل أفكارهم إلى واقع ملموس بأقل جهد ممكن. نسعى لأن نكون الشريك الأول للمطورين في رحلتهم الإبداعية.
+                        </p>
+                        
+                        <h2>قيمنا</h2>
+                        <p>
+                            نؤمن بالابتكار المستمر، والتعاون المفتوح، والشفافية في كل ما نقوم به. نلتزم بتقديم حلول عالية الجودة تلبي احتياجات مستخدمينا وتتجاوز توقعاتهم.
+                        </p>
+                    </div>
+                    
+                    <div class="about-image">
+                        <img src="/placeholder.svg?height=600&width=800" alt="فريق عبدالعزيز AI">
+                    </div>
+                </div>
+            </section>
+            
+            <section class="team-section">
+                <div class="team-header">
+                    <h2 class="team-title">فريقنا</h2>
+                    <p>تعرف على الأشخاص الذين يقفون وراء عبدالعزيز AI</p>
+                </div>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="/placeholder.svg?height=150&width=150" alt="عبدالعزيز">
+                        </div>
+                        <h3 class="member-name">عبدالعزيز</h3>
+                        <p class="member-role">المؤسس والمدير التنفيذي</p>
+                        <p class="member-bio">
+                            خبير في مجال الذكاء الاصطناعي وأمن المعلومات، يسعى لتطوير حلول مبتكرة تساعد المطورين على بناء تطبيقات آمنة وفعالة.
+                        </p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="/placeholder.svg?height=150&width=150" alt="سارة">
+                        </div>
+                        <h3 class="member-name">سارة</h3>
+                        <p class="member-role">مديرة المنتج</p>
+                        <p class="member-bio">
+                            متخصصة في تطوير المنتجات وتحسين تجربة المستخدم، تعمل على ضمان تقديم منتجات سهلة الاستخدام وعالية الجودة.
+                        </p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="/placeholder.svg?height=150&width=150" alt="محمد">
+                        </div>
+                        <h3 class="member-name">محمد</h3>
+                        <p class="member-role">مهندس الذكاء الاصطناعي</p>
+                        <p class="member-bio">
+                            خبير في تطوير نماذج الذكاء الاصطناعي وتحسين أدائها، يعمل على تطوير الخوارزميات التي تدعم منصتنا.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="github-section">
+                <h2 class="github-title">مستودعاتنا على GitHub</h2>
+                <p class="github-description">
+                    نؤمن بقوة المصادر المفتوحة والتعاون المجتمعي. يمكنك الاطلاع على مشاريعنا ومساهماتنا على GitHub والمشاركة في تطويرها.
+                </p>
+                
+                <div class="github-stats">
+                    <div class="github-stat">
+                        <div class="stat-value" id="repos-count">0</div>
+                        <div class="stat-label">المستودعات</div>
+                    </div>
+                    
+                    <div class="github-stat">
+                        <div class="stat-value" id="followers-count">0</div>
+                        <div class="stat-label">المتابعون</div>
+                    </div>
+                    
+                    <div class="github-stat">
+                        <div class="stat-value" id="stars-count">0</div>
+                        <div class="stat-label">النجوم</div>
+                    </div>
+                </div>
+                
+                <a href="https://github.com/openaziz" target="_blank" class="github-button">
+                    <i class="fab fa-github"></i>
+                    تابعنا على GitHub
+                </a>
+            </section>
+        </main>
+    </div>
+    
+    <script src="/js/config.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch GitHub user data
+            fetch('https://api.github.com/users/openaziz')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('repos-count').textContent = data.public_repos || 0;
+                    document.getElementById('followers-count').textContent = data.followers || 0;
+                    
+                    // Fetch repositories to count stars
+                    fetch('https://api.github.com/users/openaziz/repos')
+                        .then(response => response.json())
+                        .then(repos => {
+                            const totalStars = repos.reduce((total, repo) => total + repo.stargazers_count, 0);
+                            document.getElementById('stars-count').textContent = totalStars;
+                        })
+                        .catch(error => console.error('Error fetching repositories:', error));
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+        });
+    </script>
+</body>
+</html>

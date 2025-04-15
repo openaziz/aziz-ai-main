@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محرر الكود - AzizAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AzizAI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/code-editor" class="active"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/hosting"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="/repositories"><i class="fas fa-database"></i> المستودعات</a></li>
+                    <li><a href="/bot-manager"><i class="fas fa-robot"></i> إدارة البوت</a></li>
+                    <li><a href="/blue-wolf"><i class="fas fa-dog"></i> الذئب الأزرق</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top bar -->
+            <div class="h-14 bg-gradient-to-r from-[#2d0b00] to-[#4a0000] text-red-400 flex items-center px-4 justify-between border-b border-red-900/50 shadow-md">
+                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <button id="toggle-sidebar-btn" class="text-red-400 hover:text-red-300 hover:bg-red-900/20 bg-transparent border-0 p-2 rounded">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-lg font-bold flex items-center">
+                        <i class="fas fa-code mr-2"></i>
+                        <span id="current-file">main.js</span>
+                        <span class="text-gray-500 text-sm ml-2" id="project-name">(مشروعي_الجحيمي)</span>
+                    </h1>
+                </div>
+
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <button id="run-btn" class="bg-red-900/30 hover:bg-red-900/50 text-red-400 transition-all duration-200 px-3 py-1 rounded">
+                        <i class="fas fa-play mr-1"></i>
+                        تشغيل
+                    </button>
+                    <button id="stop-btn" class="bg-red-900/30 hover:bg-red-900/50 text-red-400 transition-all duration-200 px-3 py-1 rounded" disabled>
+                        <i class="fas fa-square mr-1"></i>
+                        إيقاف
+                    </button>
+                    <button id="save-btn" class="bg-red-900/30 hover:bg-red-900/50 text-red-400 transition-all duration-200 px-3 py-1 rounded">
+                        <i class="fas fa-save mr-1"></i>
+                        حفظ
+                    </button>
+                    <button id="toggle-chat-btn" class="bg-red-900/30 hover:bg-red-900/50 text-red-400 transition-all duration-200 px-3 py-1 rounded">
+                        <i class="fas fa-comment-alt mr-1"></i>
+                        إخفاء المساعد
+                    </button>
+
+                    <div class="flex items-center">
+                        <span class="text-sm text-red-400 ml-2">نموذج الذكاء:</span>
+                        <select id="ai-model-select" class="w-[140px] bg-[#2d0b00] border-red-900/50 text-red-400 h-8 ml-2 p-1 rounded">
+                            <option value="gpt-4o">GPT-4o</option>
+                            <option value="claude">Claude 3.5</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content area -->
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Sidebar -->
+                <div id="files-sidebar" class="w-64 bg-black/80 border-left border-red-900/20 overflow-y-auto shadow-lg">
+                    <div class="p-4">
+                        <h2 class="text-red-500 font-bold mb-2 flex items-center">
+                            <i class="fas fa-folder mr-2"></i>
+                            ملفات المشروع
+                        </h2>
+                        <div id="file-tree" class="text-sm">
+                            <!-- سيتم إنشاء شجرة الملفات هنا بواسطة JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor and chat area -->
+                <div class="flex-1 flex overflow-hidden">
+                    <!-- Editor area -->
+                    <div id="editor-container" class="flex-1 overflow-hidden flex flex-col">
+                        <div class="tabs bg-black/40 border-b border-red-900/20 rounded-none justify-start">
+                            <button class="tab active" data-tab="editor">المحرر</button>
+                            <button class="tab" data-tab="output">المخرجات</button>
+                            <button class="tab" data-tab="settings">
+                                <i class="fas fa-cog mr-1"></i>
+                                الإعدادات
+                            </button>
+                        </div>
+                        <div class="tab-content" id="editor-tab" style="display: block; height: calc(100% - 40px);">
+                            <div id="monaco-editor" class="h-full w-full"></div>
+                        </div>
+                        <div class="tab-content" id="output-tab" style="display: none; height: calc(100% - 40px);">
+                            <div class="h-full p-4 font-mono text-sm text-red-300 overflow-auto bg-[#1a0000]">
+                                <div id="running-indicator" class="animate-pulse flex items-center mb-2 hidden">
+                                    <div class="loading-spinner mr-2"></div>
+                                    جاري التنفيذ...
+                                </div>
+                                <pre id="output-content"></pre>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="settings-tab" style="display: none; height: calc(100% - 40px);">
+                            <div class="max-w-md mx-auto p-4 bg-[#1a0000]">
+                                <h3 class="text-xl font-bold mb-4">إعدادات المحرر</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <label class="text-sm font-medium">إظهار خريطة مصغرة</label>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="minimap-toggle" checked>
+                                            <span class="slider round"></span>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium">لغة البرمجة</label>
+                                        <select id="language-select" class="w-full bg-[#2d0b00] border-red-900/50 text-red-400 p-2 rounded">
+                                            <option value="javascript">JavaScript</option>
+                                            <option value="python">Python</option>
+                                            <option value="html">HTML</option>
+                                            <option value="css">CSS</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium">نموذج الذكاء الاصطناعي</label>
+                                        <select id="ai-model-settings" class="w-full bg-[#2d0b00] border-red-900/50 text-red-400 p-2 rounded">
+                                            <option value="gpt-4o">GPT-4o</option>
+                                            <option value="claude">Claude 3.5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat area -->
+                    <div id="chat-area" class="w-1/3 border-l border-red-900/20 flex flex-col bg-[#1a0000] shadow-lg">
+                        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                            <!-- Initial message -->
+                            <div class="chat-message assistant">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-robot text-purple-400 text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-medium text-purple-400 mb-1">AzizAI</div>
+                                        <div class="bg-[#1d0b00] p-3 rounded-md text-red-200">
+                                            مرحباً! أنا مساعدك البرمجي. كيف يمكنني مساعدتك اليوم؟
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1 text-left">الآن</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-red-900/20 bg-black/30">
+                            <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                <textarea id="chat-input" class="flex-1 bg-[#1d0b00] text-red-200 border border-red-900/30 rounded p-2 h-20 resize-none focus:outline-none focus:ring-1 focus:ring-red-900 transition-all duration-200" placeholder="اكتب سؤالك هنا..."></textarea>
+                                <div class="flex flex-col space-y-2">
+                                    <button id="mic-btn" class="bg-red-900/30 hover:bg-red-900/50 text-red-400 transition-all duration-200 w-10 h-10 flex items-center justify-center rounded">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                    <button id="send-btn" class="bg-red-900 hover:bg-red-800 text-white transition-all duration-200 w-10 h-10 flex items-center justify-center rounded">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-2 text-xs text-red-500/70">
+                                <span id="ai-model-label">نموذج: GPT-4o</span>
+                                <span id="attach-code-btn" class="flex items-center cursor-pointer hover:text-red-400 transition-all duration-200">
+                                    أرفق الكود الحالي مع السؤال
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Monaco Editor -->
+    <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' } };</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.nls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample code snippets for demo
+            const sampleCode = {
+                javascript: `// جافاسكريبت
+function summonDemon() { 
+  console.log("🔥") 
+  return "تم استدعاء الشيطان بنجاح!";
+}
+
+// استخدام الدالة
+summonDemon();
+
+// دالة لحساب مجموع رقمين
+function calculate(a, b) {
+  return a + b // يوجد خطأ متعمد
+}`,
+                python: `# بايثون
+def hello_world():
+    print("اهلا بالجحيم!")
+    
+# استدعاء الدالة
+hello_world()
+
+# دالة لتوليد سلسلة فيبوناتشي
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# طباعة أول 10 أرقام من سلسلة فيبوناتشي
+print(list(fibonacci(10)))`,
+            };
+
+            // Sample file structure for the sidebar
+            const sampleFiles = {
+                name: "مشروعي_الجحيمي",
+                type: "folder",
+                children: [
+                    { name: "main.js", type: "file", language: "javascript", content: sampleCode.javascript },
+                    { name: "script.py", type: "file", language: "python", content: sampleCode.python },
+                    {
+                        name: "utils",
+                        type: "folder",
+                        children: [
+                            {
+                                name: "fire.js",
+                                type: "file",
+                                language: "javascript",
+                                content: '// Fire utilities\nconst burn = () => "🔥";',
+                            },
+                            { name: "helpers.js", type: "file", language: "javascript", content: "// Helper functions" },
+                        ],
+                    },
+                    {
+                        name: "assets",
+                        type: "folder",
+                        children: [
+                            { name: "demon.svg", type: "file", language: "svg", content: "<svg>...</svg>" },
+                            { name: "flame.png", type: "file", language: "image", content: "image data" },
+                        ],
+                    },
+                ],
+            };
+
+            // Initialize Monaco Editor
+            require(['vs/editor/editor.main'], function() {
+                let editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                    value: sampleCode.javascript,
+                    language: 'javascript',
+                    theme: 'vs-dark',
+                    automaticLayout: true,
+                    minimap: { enabled: true },
+                    fontSize: 14,
+                    fontFamily: 'JetBrains Mono, Menlo, Monaco, monospace',
+                });
+
+                // Build file tree
+                buildFileTree(sampleFiles, document.getElementById('file-tree'));
+
+                // Handle file clicks
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('file-item') || e.target.parentElement.classList.contains('file-item')) {
+                        const fileItem = e.target.classList.contains('file-item') ? e.target : e.target.parentElement;
+                        const fileName = fileItem.getAttribute('data-name');
+                        const fileLanguage = fileItem.getAttribute('data-language');
+                        const fileContent = fileItem.getAttribute('data-content');
+                        
+                        // Update editor
+                        monaco.editor.setModelLanguage(editor.getModel(), fileLanguage);
+                        editor.setValue(fileContent);
+                        
+                        // Update current file name
+                        document.getElementById('current-file').textContent = fileName;
+                        
+                        // Update language select
+                        document.getElementById('language-select').value = fileLanguage;
+                    }
+                    
+                    if (e.target.classList.contains('folder-toggle') || e.target.parentElement.classList.contains('folder-toggle')) {
+                        const folderToggle = e.target.classList.contains('folder-toggle') ? e.target : e.target.parentElement;
+                        const folderId = folderToggle.getAttribute('data-folder');
+                        const folderContent = document.getElementById(folderId);
+                        
+                        if (folderContent.classList.contains('hidden')) {
+                            folderContent.classList.remove('hidden');
+                            folderToggle.querySelector('i').classList.remove('fa-chevron-right');
+                            folderToggle.querySelector('i').classList.add('fa-chevron-down');
+                        } else {
+                            folderContent.classList.add('hidden');
+                            folderToggle.querySelector('i').classList.remove('fa-chevron-down');
+                            folderToggle.querySelector('i').classList.add('fa-chevron-right');
+                        }
+                    }
+                });
+
+                // Handle tab switching
+                const tabs = document.querySelectorAll('.tab');
+                const tabContents = document.querySelectorAll('.tab-content');
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all tabs
+                        tabs.forEach(t => t.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all tab contents
+                        tabContents.forEach(content => {
+                            content.style.display = 'none';
+                        });
+                        
+                        // Show the corresponding tab content
+                        const tabId = this.getAttribute('data-tab');
+                        document.getElementById(`${tabId}-tab`).style.display = 'block';
+                    });
+                });
+
+                // Handle run button
+                document.getElementById('run-btn').addEventListener('click', function() {
+                    const code = editor.getValue();
+                    const language = document.getElementById('language-select').value;
+                    
+                    // Show running indicator
+                    document.getElementById('running-indicator').classList.remove('hidden');
+                    
+                    // Switch to output tab
+                    document.querySelector('[data-tab="output"]').click();
+                    
+                    // Simulate code execution
+                    setTimeout(() => {
+                        let output = '';
+                        
+                        if (language === 'javascript') {
+                            output = `> summonDemon()
+🔥
+"تم استدعاء الشيطان بنجاح!"
+
+> calculate(5, 3)
+8
+`;
+                        } else if (language === 'python') {
+                            output = `اهلا بالجحيم!
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+`;
+                        }
+                        
+                        document.getElementById('output-content').textContent = output;
+                        document.getElementById('running-indicator').classList.add('hidden');
+                    }, 2000);
+                });
+
+                // Handle stop button
+                document.getElementById('stop-btn').addEventListener('click', function() {
+                    document.getElementById('running-indicator').classList.add('hidden');
+                    document.getElementById('output-content').textContent = 'تم إيقاف تنفيذ الكود.';
+                });
+
+                // Handle save button
+                document.getElementById('save-btn').addEventListener('click', function() {
+                    // Simulate saving
+                    const fileName = document.getElementById('current-file').textContent;
+                    
+                    // Add message to chat
+                    addChatMessage('system', `تم حفظ الملف ${fileName} بنجاح!`);
+                });
+
+                // Handle toggle chat button
+                document.getElementById('toggle-chat-btn').addEventListener('click', function() {
+                    const chatArea = document.getElementById('chat-area');
+                    const editorContainer = document.getElementById('editor-container');
+                    
+                    if (chatArea.classList.contains('hidden')) {
+                        chatArea.classList.remove('hidden');
+                        editorContainer.classList.remove('w-full');
+                        this.innerHTML = '<i class="fas fa-comment-alt mr-1"></i> إخفاء المساعد';
+                    } else {
+                        chatArea.classList.add('hidden');
+                        editorContainer.classList.add('w-full');
+                        this.innerHTML = '<i class="fas fa-comment-alt mr-1"></i> إظهار المساعد';
+                    }
+                });
+
+                // Handle toggle sidebar button
+                document.getElementById('toggle-sidebar-btn').addEventListener('click', function() {
+                    const filesSidebar = document.getElementById('files-sidebar');
+                    
+                    if (filesSidebar.classList.contains('hidden')) {
+                        filesSidebar.classList.remove('hidden');
+                    } else {
+                        filesSidebar.classList.add('hidden');
+                    }
+                });
+
+                // Handle chat input
+                document.getElementById('send-btn').addEventListener('click', sendChatMessage);
+                document.getElementById('chat-input').addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendChatMessage();
+                    }
+                });
+
+                // Handle attach code button
+                document.getElementById('attach-code-btn').addEventListener('click', function() {
+                    const chatInput = document.getElementById('chat-input');
+                    const code = editor.getValue();
+                    chatInput.value += `\n\`\`\`${document.getElementById('language-select').value}\n${code}\n\`\`\``;
+                });
+
+                // Handle minimap toggle
+                document.getElementById('minimap-toggle').addEventListener('change', function() {
+                    editor.updateOptions({ minimap: { enabled: this.checked } });
+                });
+
+                // Handle language change
+                document.getElementById('language-select').addEventListener('change', function() {
+                    monaco.editor.setModelLanguage(editor.getModel(), this.value);
+                });
+
+                // Handle AI model change
+                document.getElementById('ai-model-select').addEventListener('change', function() {
+                    document.getElementById('ai-model-settings').value = this.value;
+                    document.getElementById('ai-model-label').textContent = `نموذج: ${this.value === 'gpt-4o' ? 'GPT-4o' : 'Claude 3.5'}`;
+                });
+
+                document.getElementById('ai-model-settings').addEventListener('change', function() {
+                    document.getElementById('ai-model-select').value = this.value;
+                    document.getElementById('ai-model-label').textContent = `نموذج: ${this.value === 'gpt-4o' ? 'GPT-4o' : 'Claude 3.5'}`;
+                });
+
+                // Function to build file tree
+                function buildFileTree(item, container, level = 0) {
+                    if (item.type === 'folder') {
+                        const folderId = `folder-${item.name.replace(/\s+/g, '-').toLowerCase()}-${level}`;
+                        
+                        const folderElement = document.createElement('div');
+                        folderElement.className = 'mb-1';
+                        folderElement.innerHTML = `
+                            <div class="folder-toggle flex items-center py-1.5 px-2 hover:bg-[#2d0b00] rounded cursor-pointer transition-colors duration-200" data-folder="${folderId}">
+                                <i class="fas fa-chevron-down h-3.5 w-3.5 text-red-500 mr-1"></i>
+                                <i class="fas fa-folder h-4 w-4 text-red-400 mr-1.5"></i>
+                                <span class="text-sm text-gray-300 hover:text-white transition-colors duration-200">${item.name}</span>
+                            </div>
+                            <div id="${folderId}" class="pl-5 border-l border-red-900/20 ml-2.5 my-1">
+                                <!-- Folder contents will go here -->
+                            </div>
+                        `;
+                        
+                        container.appendChild(folderElement);
+                        
+                        // Add children
+                        if (item.children && item.children.length > 0) {
+                            item.children.forEach(child => {
+                                buildFileTree(child, document.getElementById(folderId), level + 1);
+                            });
+                        }
+                    } else {
+                        // Define icon and color based on file type/extension
+                        const extension = item.name.split('.').pop().toLowerCase();
+                        let iconClass = 'text-gray-400';
+                        
+                        switch (extension) {
+                            case 'js':
+                            case 'jsx':
+                                iconClass = 'text-yellow-500';
+                                break;
+                            case 'py':
+                                iconClass = 'text-blue-400';
+                                break;
+                            case 'css':
+                                iconClass = 'text-blue-500';
+                                break;
+                            case 'html':
+                                iconClass = 'text-orange-500';
+                                break;
+                            case 'json':
+                                iconClass = 'text-yellow-300';
+                                break;
+                            case 'svg':
+                            case 'png':
+                            case 'jpg':
+                                iconClass = 'text-purple-400';
+                                break;
+                        }
+                        
+                        const fileElement = document.createElement('div');
+                        fileElement.className = 'file-item flex items-center py-1.5 px-2 hover:bg-[#2d0b00] rounded cursor-pointer ml-3.5 transition-colors duration-200';
+                        fileElement.setAttribute('data-name', item.name);
+                        fileElement.setAttribute('data-language', item.language);
+                        fileElement.setAttribute('data-content', item.content);
+                        fileElement.innerHTML = `
+                            <i class="fas fa-file h-4 w-4 ${iconClass} mr-1.5"></i>
+                            <span class="text-sm ${iconClass} hover:text-white transition-colors duration-200">${item.name}</span>
+                        `;
+                        
+                        container.appendChild(fileElement);
+                    }
+                }
+
+                // Function to send chat message
+                function sendChatMessage() {
+                    const chatInput = document.getElementById('chat-input');
+                    const message = chatInput.value.trim();
+                    
+                    if (!message) return;
+                    
+                    // Add user message
+                    addChatMessage('user', message);
+                    
+                    // Clear input
+                    chatInput.value = '';
+                    
+                    // Add typing indicator
+                    const typingIndicator = document.createElement('div');
+                    typingIndicator.className = 'chat-message assistant typing';
+                    typingIndicator.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot text-purple-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-purple-400 mb-1">AzizAI</div>
+                                <div class="bg-[#1d0b00] p-3 rounded-md text-red-200">
+                                    <div class="flex space-x-2">
+                                        <div class="h-2 w-2 rounded-full bg-purple-500 animate-pulse"></div>
+                                        <div class="h-2 w-2 rounded-full bg-purple-500 animate-pulse" style="animation-delay: 0.2s"></div>
+                                        <div class="h-2 w-2 rounded-full bg-purple-500 animate-pulse" style="animation-delay: 0.4s"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('chat-messages').appendChild(typingIndicator);
+                    scrollChatToBottom();
+                    
+                    // Simulate AI response
+                    setTimeout(() => {
+                        // Remove typing indicator
+                        typingIndicator.remove();
+                        
+                        // Generate response based on message
+                        let response = '';
+                        
+                        if (message.toLowerCase().includes('خطأ') || message.toLowerCase().includes('مشكلة')) {
+                            response = `يبدو أن هناك خطأ في الكود. في دالة \`calculate\`، يجب إضافة فاصلة منقوطة (;) في نهاية السطر:
+
+\`\`\`javascript
+function calculate(a, b) {
+  return a + b; // إضافة فاصلة منقوطة هنا
+}
+\`\`\`
+
+هذا سيحل المشكلة ويجعل الكود يعمل بشكل صحيح.`;
+                        } else if (message.toLowerCase().includes('كيف') || message.toLowerCase().includes('شرح')) {
+                            response = `بالتأكيد! دعني أشرح كيف تعمل دالة \`fibonacci\` في الكود:
+
+1. تأخذ الدالة عددًا \`n\` كمدخل، وهو عدد الأرقام التي نريد توليدها.
+2. تبدأ بقيمتين أوليتين: \`a = 0\` و \`b = 1\`.
+3. تستخدم \`yield\` لإرجاع القيمة الحالية لـ \`a\` في كل تكرار.
+4. ثم تحدث قيم \`a\` و \`b\` بحيث \`a\` تصبح \`b\` و \`b\` تصبح مجموع \`a + b\` السابقين.
+5. تكرر هذه العملية \`n\` مرة.
+
+هذه طريقة فعالة لتوليد سلسلة فيبوناتشي باستخدام مولدات Python.`;
+                        } else {
+                            response = `شكرًا على سؤالك! يمكنني مساعدتك في تحسين الكود الحالي. إليك بعض الاقتراحات:
+
+1. إضافة التعليقات التوثيقية لتوضيح الغرض من الدوال.
+2. إضافة التحقق من المدخلات في دالة \`calculate\`.
+3. استخدام الأساليب الحديثة في JavaScript مثل الدوال السهمية.
+
+هل ترغب في رؤية مثال على كيفية تحسين الكود؟`;
+                        }
+                        
+                        // Add AI response
+                        addChatMessage('assistant', response);
+                    }, 2000);
+                }
+
+                // Function to add chat message
+                function addChatMessage(role, content) {
+                    const chatMessages = document.getElementById('chat-messages');
+                    
+                    const messageElement = document.createElement('div');
+                    messageElement.className = `chat-message ${role}`;
+                    
+                    if (role === 'user') {
+                        messageElement.innerHTML = `
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user text-blue-400 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-blue-400 mb-1">أنت</div>
+                                    <div class="bg-[#1d0b00] p-3 rounded-md text-red-200">${formatMessage(content)}</div>
+                                    <div class="text-xs text-gray-500 mt-1 text-left">${new Date().toLocaleTimeString()}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else if (role === 'assistant') {
+                        messageElement.innerHTML = `
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-purple-400 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-purple-400 mb-1">AzizAI</div>
+                                    <div class="bg-[#1d0b00] p-3 rounded-md text-red-200">${formatMessage(content)}</div>
+                                    <div class="text-xs text-gray-500 mt-1 text-left">${new Date().toLocaleTimeString()}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        messageElement.innerHTML = `
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-gray-600/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-info-circle text-gray-400 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-400 mb-1">النظام</div>
+                                    <div class="bg-[#1d0b00] p-3 rounded-md text-red-200">${content}</div>
+                                    <div class="text-xs text-gray-500 mt-1 text-left">${new Date().toLocaleTimeString()}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    chatMessages.appendChild(messageElement);
+                    scrollChatToBottom();
+                }
+
+                // Function to format message (handle code blocks, etc.)
+                function formatMessage(content) {
+                    // Replace code blocks
+                    content = content.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, language, code) {
+                        return `<pre class="bg-black/50 p-3 rounded my-2 overflow-x-auto"><code class="text-green-400 font-mono text-sm">${escapeHtml(code)}</code></pre>`;
+                    });
+                    
+                    // Replace inline code
+                    content = content.replace(/`([^`]+)`/g, '<code class="bg-black/30 px-1 py-0.5 rounded font-mono text-green-400">$1</code>');
+                    
+                    // Replace newlines with <br>
+                    content = content.replace(/\n/g, '<br>');
+                    
+                    return content;
+                }
+
+                // Function to escape HTML
+                function escapeHtml(text) {
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
+                }
+
+                // Function to scroll chat to bottom
+                function scrollChatToBottom() {
+                    const chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        /* Loading Spinner */
+        .loading-spinner {
+            border: 3px solid rgba(255, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid #ff2a2a;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #ff2a2a;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #ff2a2a;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #ff2a2a;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 0, 0, 0.1);
+            opacity: 1;
+        }
+        
+        .tab.active {
+            background: rgba(255, 0, 0, 0.2);
+            opacity: 1;
+            font-weight: bold;
+        }
+    </style>
+</body>
+</html>

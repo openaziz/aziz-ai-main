@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الذئب الأزرق - AzizAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AzizAI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/code-editor"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/hosting"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="/repositories"><i class="fas fa-database"></i> المستودعات</a></li>
+                    <li><a href="/bot-manager"><i class="fas fa-robot"></i> إدارة البوت</a></li>
+                    <li><a href="/blue-wolf" class="active"><i class="fas fa-dog"></i> الذئب الأزرق</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="h-16 border-b border-purple-900/30 flex items-center justify-between px-6 bg-black">
+                <div class="flex items-center gap-2">
+                    <button id="toggle-sidebar-btn" class="text-purple-400 hover:text-purple-300 hover:bg-purple-900/20 bg-transparent border-0 p-2 rounded">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h1 class="text-xl font-bold text-blue-400">الذئب الأزرق</h1>
+                    <span id="tensorflow-status" class="text-xs bg-green-900/30 text-green-400 px-2 py-0.5 rounded-full flex items-center hidden">
+                        <i class="fas fa-bolt mr-1"></i>
+                        TensorFlow.js نشط
+                    </span>
+                </div>
+
+                <div class="relative">
+                    <input id="secret-input" class="w-64 bg-gray-900/50 border-purple-900/50 text-white placeholder:text-gray-500 p-2 rounded" 
+                           placeholder="أدخل كلمة سر البوابة..." type="text">
+                    <div id="portal-indicator" class="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-purple-500 animate-pulse hidden"></div>
+                </div>
+            </header>
+
+            <!-- 3D Scene -->
+            <div class="flex-1 relative">
+                <div id="scene-container" class="absolute inset-0 z-10"></div>
+
+                <!-- Overlay with question -->
+                <div id="question-overlay" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 w-full max-w-2xl px-4 hidden">
+                    <div id="question-card" class="bg-black/80 border border-blue-500/30 backdrop-blur-sm transition-all duration-500 p-6 rounded-lg">
+                        <div id="philosophical-question" class="mb-4 text-xl font-bold text-blue-400 text-center"></div>
+                        <div id="programming-idea" class="mt-4 text-purple-300 text-center flex items-center justify-center hidden">
+                            <i class="fas fa-code mr-2 text-purple-400"></i>
+                            <span id="programming-idea-text"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wolf clicks counter -->
+                <div class="absolute top-4 right-4 z-20 bg-blue-900/30 text-blue-300 px-3 py-1 rounded-full text-sm">
+                    نقرات الذئب: <span id="wolf-clicks-count">0</span>
+                </div>
+
+                <!-- Instructions -->
+                <div class="absolute top-4 left-4 z-20 bg-purple-900/30 text-purple-300 px-3 py-1 rounded-full text-sm flex items-center">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    انقر على الذئب الأزرق للحصول على حكمة فلسفية
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // أسئلة فلسفية تتحول إلى أفكار برمجية
+            const philosophicalQuestions = [
+                {
+                    question: "ما هو الوجود في عالم من الأكواد؟",
+                    programmingIdea: "الكائنات هي تجسيد للوجود في عالم البرمجة، حيث تحمل الحالة والسلوك معًا."
+                },
+                {
+                    question: "هل الخوارزميات تحلم بخرائط بيانات كهربائية؟",
+                    programmingIdea: "الذكاء الاصطناعي يتعلم من الأنماط مثلما تحلم العقول البشرية بالصور والأفكار."
+                },
+                {
+                    question: "ما هي طبيعة التكرار في الكون الرقمي؟",
+                    programmingIdea: "الحلقات التكرارية هي محاكاة للدورات الطبيعية، تعيد نفسها حتى تصل إلى حالة التوقف."
+                },
+                {
+                    question: "هل يمكن للكود أن يكون جميلاً؟",
+                    programmingIdea: "الأناقة في البرمجة تأتي من البساطة والوضوح، مثل قصيدة شعرية مكتوبة بلغة الآلة."
+                },
+                {
+                    question: "ما هو الفرق بين الحقيقة والتجريد في عالم البرمجة؟",
+                    programmingIdea: "الواجهات هي تجريدات تخفي التعقيد، مثل الفلاسفة الذين يبسطون الأفكار المعقدة."
+                },
+                {
+                    question: "هل الخطأ البرمجي هو مجرد حقيقة لم تكتشف بعد؟",
+                    programmingIdea: "الأخطاء البرمجية هي فرص للتعلم، مثل التناقضات الفلسفية التي تدفعنا للتفكير بعمق أكبر."
+                },
+                {
+                    question: "ما هي العلاقة بين الزمن والحالة المتغيرة؟",
+                    programmingIdea: "إدارة الحالة في البرمجة هي محاولة لترويض الزمن وتأثيراته على البيانات."
+                },
+                {
+                    question: "هل يمكن للكود أن يكون واعياً بذاته؟",
+                    programmingIdea: "البرمجة التأملية تسمح للكود بفحص نفسه وتعديل سلوكه، مقتربًا من فكرة الوعي الذاتي."
+                },
+                {
+                    question: "ما هو الصمت في عالم من الضجيج الرقمي؟",
+                    programmingIdea: "التعليقات البرمجية هي لحظات الصمت التأملي وسط ضجيج التنفيذ."
+                },
+                {
+                    question: "هل الكود المكتوب ولم يُنفذ له وجود حقيقي؟",
+                    programmingIdea: "الكود غير المستخدم مثل الأفكار غير المعبر عنها، موجود كإمكانية لكن بدون تأثير."
+                }
+            ];
+
+            // متغيرات عامة
+            let scene, camera, renderer, controls;
+            let wolf, grid, stars, portal;
+            let wolfClicks = 0;
+            let secretPortalActive = false;
+            let tensorflowLoaded = false;
+            let currentQuestion = null;
+
+            // عناصر DOM
+            const sceneContainer = document.getElementById('scene-container');
+            const secretInput = document.getElementById('secret-input');
+            const portalIndicator = document.getElementById('portal-indicator');
+            const wolfClicksCount = document.getElementById('wolf-clicks-count');
+            const questionOverlay = document.getElementById('question-overlay');
+            const questionCard = document.getElementById('question-card');
+            const philosophicalQuestionElement = document.getElementById('philosophical-question');
+            const programmingIdeaElement = document.getElementById('programming-idea');
+            const programmingIdeaText = document.getElementById('programming-idea-text');
+            const tensorflowStatus = document.getElementById('tensorflow-status');
+            const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+
+            // تهيئة المشهد الثلاثي الأبعاد
+            function initThreeJS() {
+                // إنشاء المشهد
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x000000);
+
+                // إنشاء الكاميرا
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 5;
+
+                // إنشاء المُصيّر
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                sceneContainer.appendChild(renderer.domElement);
+
+                // إضافة التحكم بالكاميرا
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+
+                // إنشاء الذئب الأزرق (كرة زرقاء)
+                const wolfGeometry = new THREE.SphereGeometry(1, 32, 32);
+                const wolfMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x0066ff,
+                    emissive: 0x001133,
+                    specular: 0x111111,
+                    shininess: 30,
+                    transparent: true,
+                    opacity: 0.9,
+                });
+                wolf = new THREE.Mesh(wolfGeometry, wolfMaterial);
+                scene.add(wolf);
+
+                // إضافة إضاءة
+                const ambientLight = new THREE.AmbientLight(0x333333);
+                scene.add(ambientLight);
+
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                directionalLight.position.set(5, 3, 5);
+                scene.add(directionalLight);
+
+                // إنشاء شبكة من الخيوط الأرجوانية
+                grid = new THREE.GridHelper(20, 20, 0x8800ff, 0x440088);
+                scene.add(grid);
+
+                // إنشاء الب  20, 0x8800ff, 0x440088);
+                scene.add(grid);
+
+                // إنشاء البوابة السرية (غير مرئية في البداية)
+                const portalGeometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
+                const portalMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff00ff,
+                    emissive: 0x330033,
+                    transparent: true,
+                    opacity: 0,
+                });
+                portal = new THREE.Mesh(portalGeometry, portalMaterial);
+                portal.rotation.x = Math.PI / 2;
+                portal.position.z = -3;
+                scene.add(portal);
+
+                // إضافة نجوم في الخلفية
+                const starsGeometry = new THREE.BufferGeometry();
+                const starsMaterial = new THREE.PointsMaterial({
+                    color: 0xffffff,
+                    size: 0.05,
+                });
+
+                const starsVertices = [];
+                for (let i = 0; i < 1000; i++) {
+                    const x = (Math.random() - 0.5) * 100;
+                    const y = (Math.random() - 0.5) * 100;
+                    const z = (Math.random() - 0.5) * 100;
+                    starsVertices.push(x, y, z);
+                }
+
+                starsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starsVertices, 3));
+                stars = new THREE.Points(starsGeometry, starsMaterial);
+                scene.add(stars);
+
+                // معالجة تغيير حجم النافذة
+                window.addEventListener('resize', onWindowResize);
+
+                // إضافة معالج النقر
+                renderer.domElement.addEventListener('click', onCanvasClick);
+
+                // بدء حلقة الرسم
+                animate();
+            }
+
+            // معالجة تغيير حجم النافذة
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            // معالجة النقر على الكانفاس
+            function onCanvasClick(event) {
+                // حساب موقع الماوس بالنسبة للمشهد
+                const rect = renderer.domElement.getBoundingClientRect();
+                const mouse = new THREE.Vector2();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+                // استخدام Raycaster للتحقق من النقر على الذئب
+                const raycaster = new THREE.Raycaster();
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObject(wolf);
+
+                if (intersects.length > 0) {
+                    handleWolfClick();
+                }
+            }
+
+            // معالجة النقر على الذئب
+            function handleWolfClick() {
+                // زيادة عدد النقرات
+                wolfClicks++;
+                wolfClicksCount.textContent = wolfClicks;
+
+                // اختيار سؤال فلسفي عشوائي
+                const randomIndex = Math.floor(Math.random() * philosophicalQuestions.length);
+                currentQuestion = philosophicalQuestions[randomIndex];
+
+                // عرض السؤال
+                philosophicalQuestionElement.textContent = currentQuestion.question;
+                programmingIdeaText.textContent = currentQuestion.programmingIdea;
+                programmingIdeaElement.classList.add('hidden');
+                questionOverlay.classList.remove('hidden');
+
+                // بعد 3 ثوانٍ، أظهر الفكرة البرمجية
+                setTimeout(() => {
+                    programmingIdeaElement.classList.remove('hidden');
+                }, 3000);
+            }
+
+            // تفعيل البوابة السرية
+            function activateSecretPortal() {
+                secretPortalActive = true;
+                portalIndicator.classList.remove('hidden');
+
+                // تحريك البوابة وجعلها مرئية
+                if (portal && portal.material) {
+                    const portalAnimation = () => {
+                        if (portal.material.opacity < 1) {
+                            portal.material.opacity += 0.02;
+                            portal.rotation.z += 0.05;
+                            requestAnimationFrame(portalAnimation);
+                        }
+                    };
+
+                    portalAnimation();
+                }
+
+                // عرض رسالة
+                setTimeout(() => {
+                    alert("تم تفعيل البوابة السرية! أنت الآن في عالم الأفكار المجردة.");
+                }, 500);
+            }
+
+            // حلقة الرسم
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // تحريك الذئب
+                if (wolf) {
+                    wolf.rotation.x += 0.005;
+                    wolf.rotation.y += 0.01;
+                }
+
+                // تحريك الشبكة
+                if (grid) {
+                    grid.rotation.y += 0.001;
+                }
+
+                // تحديث التحكم بالكاميرا
+                if (controls) {
+                    controls.update();
+                }
+
+                // رسم المشهد
+                renderer.render(scene, camera);
+            }
+
+            // تهيئة TensorFlow.js
+            async function initTensorFlow() {
+                try {
+                    // تحميل TensorFlow.js
+                    await tf.ready();
+                    
+                    // تعيين WebGL كواجهة خلفية
+                    await tf.setBackend('webgl');
+                    
+                    console.log("TensorFlow.js تم تحميله بنجاح!");
+                    console.log("الواجهة الخلفية:", tf.getBackend());
+                    
+                    tensorflowLoaded = true;
+                    tensorflowStatus.classList.remove('hidden');
+                } catch (error) {
+                    console.error("خطأ في تحميل TensorFlow.js:", error);
+                }
+            }
+
+            // معالجة إدخال كلمة السر
+            secretInput.addEventListener('input', function(e) {
+                if (e.target.value === "3BD") {
+                    activateSecretPortal();
+                }
+            });
+
+            // معالجة زر تبديل الشريط الجانبي
+            toggleSidebarBtn.addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('hidden');
+            });
+
+            // تهيئة المشهد الثلاثي الأبعاد
+            initThreeJS();
+            
+            // تهيئة TensorFlow.js
+            initTensorFlow();
+        });
+    </script>
+
+    <style>
+        /* أنماط إضافية */
+        #scene-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #question-card {
+            transition: all 0.3s ease;
+        }
+        
+        #programming-idea {
+            transition: opacity 1s ease;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الذئب الأزرق | بوابة العوالم الثلاثية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #ui-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .ui-element {
+            pointer-events: auto;
+        }
+        
+        #search-bar {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            padding: 10px 15px;
+            border: 2px solid #8800ff;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        #search-bar:focus {
+            width: 350px;
+            box-shadow: 0 0 15px #8800ff;
+        }
+        
+        #question-container {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0066ff;
+            border-radius: 10px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        #philosophical-question {
+            font-size: 22px;
+            color: #0066ff;
+            margin-bottom: 20px;
+        }
+        
+        #programming-idea {
+            font-size: 18px;
+            color: #8800ff;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        #wolf-clicks {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 102, 0.7);
+            color: #0066ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        #instructions {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(88, 0, 102, 0.7);
+            color: #bb33ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        #instructions::before {
+            content: "!";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: #bb33ff;
+            color: #000;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+        
+        #portal-notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(136, 0, 255, 0.9);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-size: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        #world-title {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #bb33ff;
+            text-shadow: 0 0 10px #8800ff;
+            opacity: 0.8;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        #loading-progress {
+            width: 300px;
+            height: 10px;
+            background-color: #111;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0066ff, #8800ff);
+            transition: width 0.3s ease;
+        }
+        
+        #loading-text {
+            color: #0066ff;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        #wolf-logo {
+            width: 100px;
+            height: 100px;
+            background-color: #0066ff;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        #wolf-logo::before, #wolf-logo::after {
+            content: "";
+            position: absolute;
+            background-color: #0066ff;
+        }
+        
+        #wolf-logo::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+            border-radius: 50%;
+            transform: rotate(-30deg);
+        }
+        
+        #wolf-logo::after {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            right: 15px;
+            border-radius: 50%;
+            transform: rotate(30deg);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        #navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-button {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0066ff;
+            color: #0066ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(0, 102, 255, 0.3);
+        }
+        
+        .nav-button.active {
+            background-color: rgba(0, 102, 255, 0.5);
+            border-color: #bb33ff;
+        }
+        
+        #code-display {
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            width: 300px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0066ff;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #00ff00;
+            overflow: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .draggable-word {
+            position: absolute;
+            background-color: rgba(136, 0, 255, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: grab;
+            user-select: none;
+            font-size: 14px;
+            z-index: 10;
+        }
+        
+        .draggable-word:active {
+            cursor: grabbing;
+        }
+        
+        #sea-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(transparent, rgba(0, 102, 255, 0.3));
+            pointer-events: none;
+        }
+        
+        #secret-portal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff00ff, transparent);
+            box-shadow: 0 0 50px #ff00ff;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1s ease;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <div id="wolf-logo"></div>
+        <div id="loading-progress">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="loading-text">جاري تحميل عوالم الذئب الأزرق...</div>
+    </div>
+    
+    <div id="canvas-container"></div>
+    
+    <div id="ui-container">
+        <input type="text" id="search-bar" class="ui-element" placeholder="أدخل كلمة سر البوابة..." autocomplete="off">
+        
+        <div id="world-title">مملكة الأسئلة المسروقة</div>
+        
+        <div id="wolf-clicks" class="ui-element">نقرات الذئب: 0</div>
+        
+        <div id="instructions" class="ui-element">انقر على الذئب الأزرق للحصول على حكمة فلسفية</div>
+        
+        <div id="question-container">
+            <div id="philosophical-question"></div>
+            <div id="programming-idea"></div>
+        </div>
+        
+        <div id="portal-notification">تم تفعيل البوابة السرية! أنت الآن في عالم الأفكار المجردة.</div>
+        
+        <div id="code-display"></div>
+        
+        <div id="navigation" class="ui-element">
+            <button class="nav-button active" data-world="1">مملكة الأسئلة</button>
+            <button class="nav-button" data-world="2">جزيرة الأشباح</button>
+            <button class="nav-button" data-world="3">مدينة الأبدية</button>
+        </div>
+        
+        <div id="secret-portal"></div>
+        <div id="sea-area"></div>
+    </div>
+
+    <!-- تحميل المكتبات -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
+    
+    <script>
+        // الأسئلة الفلسفية وأفكار البرمجة المقابلة
+        const philosophicalQuestions = [
+            {
+                question: "ما هو الوجود في عالم من الأكواد؟",
+                programmingIdea: "الكائنات هي تجسيد للوجود في عالم البرمجة، حيث تحمل الحالة والسلوك معًا."
+            },
+            {
+                question: "هل الخوارزميات تحلم بخرائط بيانات كهربائية؟",
+                programmingIdea: "الذكاء الاصطناعي يتعلم من الأنماط مثلما تحلم العقول البشرية بالصور والأفكار."
+            },
+            {
+                question: "ما هي طبيعة التكرار في الكون الرقمي؟",
+                programmingIdea: "الحلقات التكرارية هي محاكاة للدورات الطبيعية، تعيد نفسها حتى تصل إلى حالة التوقف."
+            },
+            {
+                question: "هل يمكن للكود أن يكون جميلاً؟",
+                programmingIdea: "الأناقة في البرمجة تأتي من البساطة والوضوح، مثل قصيدة شعرية مكتوبة بلغة الآلة."
+            },
+            {
+                question: "ما هو الفرق بين الحقيقة والتجريد في عالم البرمجة؟",
+                programmingIdea: "الواجهات هي تجريدات تخفي التعقيد، مثل الفلاسفة الذين يبسطون الأفكار المعقدة."
+            },
+            {
+                question: "هل الخطأ البرمجي هو مجرد حقيقة لم تكتشف بعد؟",
+                programmingIdea: "الأخطاء البرمجية هي فرص للتعلم، مثل التناقضات الفلسفية التي تدفعنا للتفكير بعمق أكبر."
+            },
+            {
+                question: "ما هي العلاقة بين الزمن والحالة المتغيرة؟",
+                programmingIdea: "إدارة الحالة في البرمجة هي محاولة لترويض الزمن وتأثيراته على البيانات."
+            },
+            {
+                question: "هل يمكن للكود أن يكون واعياً بذاته؟",
+                programmingIdea: "البرمجة التأملية تسمح للكود بفحص نفسه وتعديل سلوكه، مقتربًا من فكرة الوعي الذاتي."
+            },
+            {
+                question: "ما هو الصمت في عالم من الضجيج الرقمي؟",
+                programmingIdea: "التعليقات البرمجية هي لحظات الصمت التأملي وسط ضجيج التنفيذ."
+            },
+            {
+                question: "هل الكود المكتوب ولم يُنفذ له وجود حقيقي؟",
+                programmingIdea: "الكود غير المستخدم مثل الأفكار غير المعبر عنها، موجود كإمكانية لكن بدون تأثير."
+            }
+        ];
+        
+        // الكلمات القابلة للسحب في العالم الثاني
+        const draggableWords = [
+            "كائن", "وراثة", "تجريد", "تغليف", "تعدد الأشكال",
+            "دالة", "مصفوفة", "تكرار", "شرط", "استثناء",
+            "واجهة", "تزامن", "خوارزمية", "بيانات", "نمط"
+        ];
+        
+        // أكواد برمجية تظهر في العالم الثالث
+        const codeSamples = [
+            `function createImmortalWebsite() {
+  const aziz = new Genius(); 
+  const wolf = new BlueWolf('3BD');
+  
+  while(universe.isAlive()) {
+    aziz.stealIdeas().transformToCode();
+    wolf.howL(aziz.ideas).spawnPortal();
+    
+    if (portal.hasSecret('3000_apples')) {
+      universe.upgrade(); // تحديث الكون!
+    }
+  }
+}`,
+            `class BlueWolf {
+  constructor(secretCode) {
+    this.power = Infinity;
+    this.secretCode = secretCode;
+    this.portals = new Map();
+  }
+  
+  howL(ideas) {
+    return ideas.map(idea => {
+      return idea.transform(this.secretCode);
+    });
+  }
+  
+  spawnPortal() {
+    const portal = new Portal(this.secretCode);
+    this.portals.set(Date.now(), portal);
+    return portal;
+  }
+}`,
+            `// كود سري للذئب الأزرق
+const universe = {
+  dimensions: 11,
+  isAlive: function() {
+    return Math.random() > 0.00001;
+  },
+  upgrade: function() {
+    this.dimensions++;
+    console.log("تم ترقية الكون إلى البعد " + this.dimensions);
+    return new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  }
+};`
+        ];
+        
+        // متغيرات عامة
+        let scene, camera, renderer, controls;
+        let wolf, grid, stars, portal;
+        let currentWorld = 1;
+        let wolfClicks = 0;
+        let secretPortalActive = false;
+        let collectedFruits = 0;
+        let draggingWord = null;
+        let codeDisplayInterval;
+        let tensorflowLoaded = false;
+        let trees = [];
+        let buildings = [];
+        
+        // تهيئة المشهد الثلاثي الأبعاد
+        function initThreeJS() {
+            // إنشاء المشهد
+            scene = new THREE.Scene();
+            
+            // إنشاء الكاميرا
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+            
+            // إنشاء المُصيّر
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            
+            // إضافة التحكم بالكاميرا
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            
+            // إضافة إضاءة
+            const ambientLight = new THREE.AmbientLight(0x333333);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
+            
+            // إنشاء العالم الأول
+            createWorldOne();
+            
+            // معالجة تغيير حجم النافذة
+            window.addEventListener('resize', onWindowResize);
+            
+            // إضافة معالج النقر
+            renderer.domElement.addEventListener('click', onCanvasClick);
+            
+            // بدء حلقة الرسم
+            animate();
+        }
+        
+        // إنشاء العالم الأول: مملكة الأسئلة المسروقة
+        function createWorldOne() {
+            // تنظيف المشهد
+            cleanScene();
+            
+            // تعيين خلفية سوداء
+            scene.background = new THREE.Color(0x000000);
+            
+            // إنشاء الذئب الأزرق (كرة زرقاء)
+            const wolfGeometry = new THREE.SphereGeometry(1, 32, 32);
+            const wolfMaterial = new THREE.MeshPhongMaterial({
+                color: 0x0066ff,
+                emissive: 0x001133,
+                specular: 0x111111,
+                shininess: 30,
+                transparent: true,
+                opacity: 0.9
+            });
+            wolf = new THREE.Mesh(wolfGeometry, wolfMaterial);
+            scene.add(wolf);
+            
+            // إنشاء شبكة من الخيوط الأرجوانية
+            grid = new THREE.GridHelper(20, 20, 0x8800ff, 0x440088);
+            scene.add(grid);
+            
+            // إنشاء البوابة السرية (غير مرئية في البداية)
+            const portalGeometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
+            const portalMaterial = new THREE.MeshPhongMaterial({
+                color: 0xff00ff,
+                emissive: 0x330033,
+                transparent: true,
+                opacity: 0
+            });
+            portal = new THREE.Mesh(portalGeometry, portalMaterial);
+            portal.rotation.x = Math.PI / 2;
+            portal.position.z = -3;
+            scene.add(portal);
+            
+            // إضافة نجوم في الخلفية
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.05
+            });
+            
+            const starsVertices = [];
+            for (let i = 0; i < 1000; i++) {
+                const x = (Math.random() - 0.5) * 100;
+                const y = (Math.random() - 0.5) * 100;
+                const z = (Math.random() - 0.5) * 100;
+                starsVertices.push(x, y, z);
+            }
+            
+            starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+            stars = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(stars);
+            
+            // تحديث عنوان العالم
+            document.getElementById('world-title').textContent = "مملكة الأسئلة المسروقة";
+            document.getElementById('world-title').style.color = "#bb33ff";
+            
+            // إخفاء منطقة البحر
+            document.getElementById('sea-area').style.opacity = "0";
+            
+            // إزالة الكلمات القابلة للسحب
+            removeAllDraggableWords();
+            
+            // إيقاف عرض الكود
+            clearInterval(codeDisplayInterval);
+            document.getElementById('code-display').style.opacity = "0";
+            
+            // تحديث زر التنقل النشط
+            updateActiveNavButton(1);
+        }
+        
+        // إنشاء العالم الثاني: جزيرة الأشباح الكائنية
+        function createWorldTwo() {
+            // تنظيف المشهد
+            cleanScene();
+            
+            // تعيين خلفية خضراء داكنة
+            scene.background = new THREE.Color(0x003300);
+            
+            // إنشاء الذئب الأزرق (مكعب أزرق)
+            const wolfGeometry = new THREE.BoxGeometry(1, 1, 1);
+            const wolfMaterial = new THREE.MeshPhongMaterial({
+                color: 0x0066ff,
+                emissive: 0x001133,
+                specular: 0x111111,
+                shininess: 30
+            });
+            wolf = new THREE.Mesh(wolfGeometry, wolfMaterial);
+            scene.add(wolf);
+            
+            // إنشاء أرضية خضراء
+            const groundGeometry = new THREE.PlaneGeometry(50, 50);
+            const groundMaterial = new THREE.MeshPhongMaterial({
+                color: 0x006600,
+                side: THREE.DoubleSide
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = Math.PI / 2;
+            ground.position.y = -2;
+            scene.add(ground);
+            
+            // إنشاء أشجار تحمل رموزًا برمجية
+            trees = [];
+            for (let i = 0; i < 10; i++) {
+                const tree = createTree();
+                tree.position.set(
+                    (Math.random() - 0.5) * 20,
+                    -2,
+                    (Math.random() - 0.5) * 20
+                );
+                scene.add(tree);
+                trees.push(tree);
+            }
+            
+            // إنشاء البحر
+            const seaGeometry = new THREE.PlaneGeometry(100, 50);
+            const seaMaterial = new THREE.MeshPhongMaterial({
+                color: 0x0066ff,
+                transparent: true,
+                opacity: 0.7,
+                side: THREE.DoubleSide
+            });
+            const sea = new THREE.Mesh(seaGeometry, seaMaterial);
+            sea.rotation.x = Math.PI / 2;
+            sea.position.set(0, -2.5, -30);
+            scene.add(sea);
+            
+            // إضافة إضاءة
+            const ambientLight = new THREE.AmbientLight(0x555555);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 10, 5);
+            scene.add(directionalLight);
+            
+            // تحديث عنوان العالم
+            document.getElementById('world-title').textContent = "جزيرة الأشباح الكائنية";
+            document.getElementById('world-title').style.color = "#00cc00";
+            
+            // إظهار منطقة البحر
+            document.getElementById('sea-area').style.opacity = "1";
+            
+            // إضافة الكلمات القابلة للسحب
+            createDraggableWords();
+            
+            // إيقاف عرض الكود
+            clearInterval(codeDisplayInterval);
+            document.getElementById('code-display').style.opacity = "0";
+            
+            // تحديث زر التنقل النشط
+            updateActiveNavButton(2);
+        }
+        
+        // إنشاء العالم الثالث: مدينة الأبدية الرقمية
+        function createWorldThree() {
+            // تنظيف المشهد
+            cleanScene();
+            
+            // تعيين خلفية زرقاء داكنة
+            scene.background = new THREE.Color(0x000033);
+            
+            // إنشاء الذئب الأزرق (هرم أزرق)
+            const wolfGeometry = new THREE.ConeGeometry(1, 2, 4);
+            const wolfMaterial = new THREE.MeshPhongMaterial({
+                color: 0x0066ff,
+                emissive: 0x001133,
+                specular: 0x111111,
+                shininess: 30
+            });
+            wolf = new THREE.Mesh(wolfGeometry, wolfMaterial);
+            scene.add(wolf);
+            
+            // إنشاء أرضية المدينة
+            const groundGeometry = new THREE.PlaneGeometry(100, 100);
+            const groundMaterial = new THREE.MeshPhongMaterial({
+                color: 0x000066,
+                side: THREE.DoubleSide
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = Math.PI / 2;
+            ground.position.y = -2;
+            scene.add(ground);
+            
+            // إنشاء مباني المدينة
+            buildings = [];
+            for (let i = 0; i < 20; i++) {
+                const building = createBuilding();
+                building.position.set(
+                    (Math.random() - 0.5) * 40,
+                    -2,
+                    (Math.random() - 0.5) * 40
+                );
+                scene.add(building);
+                buildings.push(building);
+            }
+            
+            // إضافة إضاءة
+            const ambientLight = new THREE.AmbientLight(0x333333);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 10, 5);
+            scene.add(directionalLight);
+            
+            // إضافة ضباب
+            scene.fog = new THREE.Fog(0x000033, 10, 50);
+            
+            // تحديث عنوان العالم
+            document.getElementById('world-title').textContent = "مدينة الأبدية الرقمية";
+            document.getElementById('world-title').style.color = "#00aaff";
+            
+            // إخفاء منطقة البحر
+            document.getElementById('sea-area').style.opacity = "0";
+            
+            // إزالة الكلمات القابلة للسحب
+            removeAllDraggableWords();
+            
+            // بدء عرض الكود
+            startCodeDisplay();
+            
+            // تحديث زر التنقل النشط
+            updateActiveNavButton(3);
+        }
+        
+        // إنشاء شجرة للعالم الثاني
+        function createTree() {
+            const treeGroup = new THREE.Group();
+            
+            // جذع الشجرة
+            const trunkGeometry = new THREE.CylinderGeometry(0.2, 0.3, 2, 8);
+            const trunkMaterial = new THREE.MeshPhongMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.y = 1;
+            treeGroup.add(trunk);
+            
+            // أوراق الشجرة
+            const leavesGeometry = new THREE.SphereGeometry(1, 8, 8);
+            const leavesMaterial = new THREE.MeshPhongMaterial({ color: 0x00aa00 });
+            const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+            leaves.position.y = 2.5;
+            treeGroup.add(leaves);
+            
+            // ثمار الكود (كرات صغيرة)
+            const fruitCount = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < fruitCount; i++) {
+                const fruitGeometry = new THREE.SphereGeometry(0.2, 8, 8);
+                const fruitMaterial = new THREE.MeshPhongMaterial({ color: 0xff00ff });
+                const fruit = new THREE.Mesh(fruitGeometry, fruitMaterial);
+                
+                // توزيع الثمار بشكل عشوائي على الشجرة
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 0.8;
+                fruit.position.set(
+                    Math.cos(angle) * radius,
+                    2.5 + (Math.random() - 0.5) * 0.8,
+                    Math.sin(angle) * radius
+                );
+                
+                treeGroup.add(fruit);
+            }
+            
+            return treeGroup;
+        }
+        
+        // إنشاء مبنى للعالم الثالث
+        function createBuilding() {
+            const buildingGroup = new THREE.Group();
+            
+            // ارتفاع عشوائي للمبنى
+            const height = Math.random() * 10 + 5;
+            
+            // جسم المبنى
+            const buildingGeometry = new THREE.BoxGeometry(2, height, 2);
+            const buildingMaterial = new THREE.MeshPhongMaterial({
+                color: Math.random() > 0.5 ? 0x0044aa : 0x4400aa,
+                emissive: 0x001133,
+                transparent: true,
+                opacity: 0.8
+            });
+            const buildingMesh = new THREE.Mesh(buildingGeometry, buildingMaterial);
+            buildingMesh.position.y = height / 2;
+            buildingGroup.add(buildingMesh);
+            
+            // إضافة نوافذ
+            const windowCount = Math.floor(height / 2);
+            for (let i = 0; i < windowCount; i++) {
+                for (let j = 0; j < 4; j++) {
+                    const windowGeometry = new THREE.PlaneGeometry(0.3, 0.3);
+                    const windowMaterial = new THREE.MeshPhongMaterial({
+                        color: 0xffff00,
+                        emissive: 0x555500,
+                        side: THREE.DoubleSide
+                    });
+                    const windowMesh = new THREE.Mesh(windowGeometry, windowMaterial);
+                    
+                    // توزيع النوافذ على جوانب المبنى
+                    const angle = j * Math.PI / 2;
+                    windowMesh.position.set(
+                        Math.sin(angle) * 1.01,
+                        1 + i * 2,
+                        Math.cos(angle) * 1.01
+                    );
+                    windowMesh.rotation.y = angle;
+                    
+                    buildingGroup.add(windowMesh);
+                }
+            }
+            
+            return buildingGroup;
+        }
+        
+        // تنظيف المشهد
+        function cleanScene() {
+            // إزالة الذئب
+            if (wolf) {
+                scene.remove(wolf);
+                if (wolf.geometry) wolf.geometry.dispose();
+                if (wolf.material) wolf.material.dispose();
+            }
+            
+            // إزالة الشبكة
+            if (grid) {
+                scene.remove(grid);
+            }
+            
+            // إزالة النجوم
+            if (stars) {
+                scene.remove(stars);
+                if (stars.geometry) stars.geometry.dispose();
+                if (stars.material) stars.material.dispose();
+            }
+            
+            // إزالة البوابة
+            if (portal) {
+                scene.remove(portal);
+                if (portal.geometry) portal.geometry.dispose();
+                if (portal.material) portal.material.dispose();
+            }
+            
+            // إزالة الأشجار
+            trees.forEach(tree => {
+                scene.remove(tree);
+                tree.traverse(child => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child.geometry) child.geometry.dispose();
+                        if (child.material) child.material.dispose();
+                    }
+                });
+            });
+            trees = [];
+            
+            // إزالة المباني
+            buildings.forEach(building => {
+                scene.remove(building);
+                building.traverse(child => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child.geometry) child.geometry.dispose();
+                        if (child.material) child.material.dispose();
+                    }
+                });
+            });
+            buildings = [];
+            
+            // إزالة الضباب
+            scene.fog = null;
+        }
+        
+        // معالجة تغيير حجم النافذة
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // معالجة النقر على الكانفاس
+        function onCanvasClick(event) {
+            // حساب موقع الماوس بالنسبة للمشهد
+            const rect = renderer.domElement.getBoundingClientRect();
+            const mouse = new THREE.Vector2();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            // استخدام Raycaster للتحقق من النقر على الذئب
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+            
+            if (wolf) {
+                const intersects = raycaster.intersectObject(wolf);
+                if (intersects.length > 0) {
+                    handleWolfClick();
+                }
+            }
+            
+            // التحقق من النقر على الأشجار في العالم الثاني
+            if (currentWorld === 2) {
+                trees.forEach(tree => {
+                    const intersects = raycaster.intersectObject(tree, true);
+                    if (intersects.length > 0) {
+                        // التحقق مما إذا كان النقر على ثمرة
+                        intersects.forEach(intersect => {
+                            if (intersect.object.geometry instanceof THREE.SphereGeometry && 
+                                intersect.object.geometry.parameters.radius === 0.2) {
+                                // إزالة الثمرة
+                                tree.remove(intersect.object);
+                                intersect.object.geometry.dispose();
+                                intersect.object.material.dispose();
+                                
+                                // زيادة عدد الثمار المجمعة
+                                collectedFruits++;
+                                
+                                // التحقق من تفعيل البوابة
+                                if (collectedFruits >= 3) {
+                                    activateSecretPortal();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // التحقق من النقر على المباني في العالم الثالث
+            if (currentWorld === 3) {
+                buildings.forEach(building => {
+                    const intersects = raycaster.intersectObject(building, true);
+                    if (intersects.length > 0) {
+                        // تغيير لون المبنى عند النقر عليه
+                        building.traverse(child => {
+                            if (child instanceof THREE.Mesh && child.geometry instanceof THREE.BoxGeometry) {
+                                child.material.color.setHex(Math.random() * 0xffffff);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        
+        // معالجة النقر على الذئب
+        function handleWolfClick() {
+            // زيادة عدد النقرات
+            wolfClicks++;
+            document.getElementById('wolf-clicks').textContent = `نقرات الذئب: ${wolfClicks}`;
+            
+            // اختيار سؤال فلسفي عشوائي
+            const randomIndex = Math.floor(Math.random() * philosophicalQuestions.length);
+            const question = philosophicalQuestions[randomIndex];
+            
+            // عرض السؤال
+            const questionContainer = document.getElementById('question-container');
+            const philosophicalQuestion = document.getElementById('philosophical-question');
+            const programmingIdea = document.getElementById('programming-idea');
+            
+            philosophicalQuestion.textContent = question.question;
+            programmingIdea.textContent = question.programmingIdea;
+            programmingIdea.style.opacity = "0";
+            
+            questionContainer.style.opacity = "1";
+            
+            // بعد 3 ثوانٍ، أظهر الفكرة البرمجية
+            setTimeout(() => {
+                programmingIdea.style.opacity = "1";
+            }, 3000);
+        }
+        
+        // تفعيل البوابة السرية
+        function activateSecretPortal() {
+            secretPortalActive = true;
+            
+            // تحريك البوابة وجعلها مرئية
+            if (portal && portal.material) {
+                const portalAnimation = () => {
+                    if (portal.material.opacity < 1) {
+                        portal.material.opacity += 0.02;
+                        portal.rotation.z += 0.05;
+                        requestAnimationFrame(portalAnimation);
+                    }
+                };
+                
+                portalAnimation();
+            }
+            
+            // عرض إشعار البوابة
+            const portalNotification = document.getElementById('portal-notification');
+            portalNotification.style.opacity = "1";
+            
+            // إظهار البوابة في واجهة المستخدم
+            document.getElementById('secret-portal').style.opacity = "1";
+            
+            setTimeout(() => {
+                portalNotification.style.opacity = "0";
+            }, 3000);
+        }
+        
+        // إنشاء الكلمات القابلة للسحب
+        function createDraggableWords() {
+            removeAllDraggableWords();
+            
+            draggableWords.forEach((word, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'draggable-word';
+                wordElement.textContent = word;
+                wordElement.style.left = `${Math.random() * 70 + 15}%`;
+                wordElement.style.top = `${Math.random() * 50 + 20}%`;
+                wordElement.setAttribute('data-index', index);
+                
+                // إضافة معالجات السحب
+                wordElement.addEventListener('mousedown', startDragging);
+                
+                document.getElementById('ui-container').appendChild(wordElement);
+            });
+            
+            // إضافة معالجات للوثيقة
+            document.addEventListener('mousemove', dragWord);
+            document.addEventListener('mouseup', stopDragging);
+        }
+        
+        // إزالة جميع الكلمات القابلة للسحب
+        function removeAllDraggableWords() {
+            const words = document.querySelectorAll('.draggable-word');
+            words.forEach(word => word.remove());
+        }
+        
+        // بدء سحب الكلمة
+        function startDragging(event) {
+            draggingWord = event.target;
+            
+            // حساب الإزاحة
+            const rect = draggingWord.getBoundingClientRect();
+            draggingWord.offsetX = event.clientX - rect.left;
+            draggingWord.offsetY = event.clientY - rect.top;
+            
+            // تغيير النمط أثناء السحب
+            draggingWord.style.zIndex = "100";
+            draggingWord.style.opacity = "0.8";
+            
+            // منع السلوك الافتراضي
+            event.preventDefault();
+        }
+        
+        // سحب الكلمة
+        function dragWord(event) {
+            if (!draggingWord) return;
+            
+            // تحريك الكلمة مع المؤشر
+            draggingWord.style.left = `${event.clientX - draggingWord.offsetX}px`;
+            draggingWord.style.top = `${event.clientY - draggingWord.offsetY}px`;
+            
+            // التحقق من إسقاط الكلمة في البحر
+            const seaArea = document.getElementById('sea-area');
+            const seaRect = seaArea.getBoundingClientRect();
+            const wordRect = draggingWord.getBoundingClientRect();
+            
+            if (
+                wordRect.bottom > seaRect.top &&
+                wordRect.right > seaRect.left &&
+                wordRect.left < seaRect.right
+            ) {
+                draggingWord.style.color = "#00ffff";
+            } else {
+                draggingWord.style.color = "white";
+            }
+        }
+        
+        // إيقاف سحب الكلمة
+        function stopDragging(event) {
+            if (!draggingWord) return;
+            
+            // التحقق من إسقاط الكلمة في البحر
+            const seaArea = document.getElementById('sea-area');
+            const seaRect = seaArea.getBoundingClientRect();
+            const wordRect = draggingWord.getBoundingClientRect();
+            
+            if (
+                wordRect.bottom > seaRect.top &&
+                wordRect.right > seaRect.left &&
+                wordRect.left < seaRect.right
+            ) {
+                // تحويل الكلمة إلى كود
+                transformWordToCode(draggingWord.textContent);
+                draggingWord.remove();
+            } else {
+                // إعادة النمط الأصلي
+                draggingWord.style.zIndex = "10";
+                draggingWord.style.opacity = "1";
+            }
+            
+            draggingWord = null;
+        }
+        
+        // تحويل الكلمة إلى كود
+        function transformWordToCode(word) {
+            // إظهار عرض الكود
+            const codeDisplay = document.getElementById('code-display');
+            codeDisplay.style.opacity = "1";
+            
+            // إنشاء كود عشوائي بناءً على الكلمة
+            let code;
+            switch (word) {
+                case "كائن":
+                    code = `class ${word}BluePrint {\n  constructor() {\n    this.power = 100;\n  }\n}`;
+                    break;
+                case "وراثة":
+                    code = `class Parent {\n  method() {}\n}\n\nclass Child extends Parent {\n  // ${word} من الأب\n}`;
+                    break;
+                case "تجريد":
+                    code = `// ${word} المفهوم\ninterface Concept {\n  execute(): void;\n}`;
+                    break;
+                default:
+                    code = `// تحويل "${word}" إلى كود\nfunction transform${word}() {\n  return "${word} البرمجي";\n}`;
+            }
+            
+            codeDisplay.textContent = code;
+            
+            // زيادة عدد الثمار المجمعة
+            collectedFruits++;
+            
+            // التحقق من تفعيل البوابة
+            if (collectedFruits >= 3) {
+                activateSecretPortal();
+            }
+        }
+        
+        // بدء عرض الكود
+        function startCodeDisplay() {
+            // إظهار عرض الكود
+            const codeDisplay = document.getElementById('code-display');
+            codeDisplay.style.opacity = "1";
+            
+            let codeIndex = 0;
+            
+            // تغيير الكود كل 5 ثوانٍ
+            codeDisplayInterval = setInterval(() => {
+                codeDisplay.textContent = codeSamples[codeIndex];
+                codeIndex = (codeIndex + 1) % codeSamples.length;
+            }, 5000);
+            
+            // عرض الكود الأول فورًا
+            codeDisplay.textContent = codeSamples[0];
+        }
+        
+        // تحديث زر التنقل النشط
+        function updateActiveNavButton(worldNumber) {
+            const buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(button => {
+                if (parseInt(button.getAttribute('data-world')) === worldNumber) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+        
+        // حلقة الرسم
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // تحريك الذئب
+            if (wolf) {
+                wolf.rotation.x += 0.005;
+                wolf.rotation.y += 0.01;
+            }
+            
+            // تحريك الشبكة في العالم الأول
+            if (currentWorld === 1 && grid) {
+                grid.rotation.y += 0.001;
+            }
+            
+            // تحريك الأشجار في العالم الثاني
+            if (currentWorld === 2) {
+                trees.forEach(tree => {
+                    tree.rotation.y += 0.005 * (Math.random() * 0.5 + 0.5);
+                });
+            }
+            
+            // تحريك المباني في العالم الثالث
+            if (currentWorld === 3) {
+                buildings.forEach(building => {
+                    building.position.y = -2 + Math.sin(Date.now() * 0.001 + building.position.x) * 0.2;
+                });
+            }
+            
+            // تحديث التحكم بالكاميرا
+            if (controls) {
+                controls.update();
+            }
+            
+            // رسم المشهد
+            renderer.render(scene, camera);
+        }
+        
+        // تهيئة TensorFlow.js
+        async function initTensorFlow() {
+            try {
+                // تحميل TensorFlow.js
+                await tf.ready();
+                
+                // تعيين WebGL كواجهة خلفية
+                await tf.setBackend('webgl');
+                
+                console.log("TensorFlow.js تم تحميله بنجاح!");
+                console.log("الواجهة الخلفية:", tf.getBackend());
+                
+                tensorflowLoaded = true;
+            } catch (error) {
+                console.error("خطأ في تحميل TensorFlow.js:", error);
+            }
+        }
+        
+        // معالجة البحث عن كلمة السر
+        document.getElementById('search-bar').addEventListener('input', function(event) {
+            const searchValue = event.target.value;
+            
+            // التحقق من كلمة السر
+            if (searchValue === "3BD") {
+                activateSecretPortal();
+            }
+        });
+        
+        // معالجة أزرار التنقل
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const worldNumber = parseInt(this.getAttribute('data-world'));
+                
+                // تغيير العالم الحالي
+                currentWorld = worldNumber;
+                
+                // إنشاء العالم المناسب
+                switch (worldNumber) {
+                    case 1:
+                        createWorldOne();
+                        break;
+                    case 2:
+                        createWorldTwo();
+                        break;
+                    case 3:
+                        createWorldThree();
+                        break;
+                }
+            });
+        });
+        
+        // معالجة مفاتيح لوحة المفاتيح
+        document.addEventListener('keydown', function(event) {
+            // التحقق من مفتاح الخروج الطارئ في العالم الثالث
+            if (
+                currentWorld === 3 &&
+                event.ctrlKey &&
+                event.shiftKey &&
+                (event.key === 'w' || event.key === 'W')
+            ) {
+                // تفعيل البوابة السرية
+                activateSecretPortal();
+                
+                // عرض رسالة خاصة
+                alert("تم تفعيل مفتاح الخروج الطارئ! أنت الآن في الصفحة الرابعة الخفية.");
+                
+                // إنشاء صفحة رابعة خفية (يمكن تنفيذها حسب الحاجة)
+                // createSecretWorld();
+            }
+        });
+        
+        // تحميل الصفحة
+        window.addEventListener('load', function() {
+            // محاكاة تحميل تدريجي
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar');
+            const loadingText = document.getElementById('loading-text');
+            const loadingScreen = document.getElementById('loading-screen');
+            
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    
+                    // إخفاء شاشة التحميل
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = "0";
+                        setTimeout(() => {
+                            loadingScreen.style.display = "none";
+                            
+                            // تهيئة المشهد الثلاثي الأبعاد
+                            initThreeJS();
+                            
+                            // تهيئة TensorFlow.js
+                            initTensorFlow();
+                        }, 500);
+                    }, 500);
+                }
+                
+                progressBar.style.width = `${progress}%`;
+                loadingText.textContent = `جاري تحميل عوالم الذئب الأزرق... ${Math.floor(progress)}%`;
+            }, 200);
+        });
+        
+        // كائن BlueWolf
+        class BlueWolf {
+            constructor(secretCode) {
+                this.power = Infinity;
+                this.secretCode = secretCode;
+                this.portals = new Map();
+            }
+            
+            howL(ideas) {
+                return ideas.map(idea => {
+                    return idea.transform(this.secretCode);
+                });
+            }
+            
+            spawnPortal() {
+                const portal = new Portal(this.secretCode);
+                this.portals.set(Date.now(), portal);
+                return portal;
+            }
+        }
+        
+        // كائن Portal
+        class Portal {
+            constructor(secretCode) {
+                this.secretCode = secretCode;
+                this.secrets = new Set();
+            }
+            
+            hasSecret(secret) {
+                return this.secrets.has(secret);
+            }
+            
+            addSecret(secret) {
+                this.secrets.add(secret);
+                return this;
+            }
+        }
+        
+        // كائن Universe
+        const universe = {
+            dimensions: 11,
+            isAlive: function() {
+                return Math.random() > 0.00001;
+            },
+            upgrade: function() {
+                this.dimensions++;
+                console.log("تم ترقية الكون إلى البعد " + this.dimensions);
+                return new Promise(resolve => {
+                    setTimeout(resolve, 3000);
+                });
+            }
+        };
+        
+        // إنشاء كائن الذئب الأزرق
+        const azizWolf = new BlueWolf('3BD');
+        console.log("تم إنشاء الذئب الأزرق:", azizWolf);
+    </script>
+</body>
+</html>

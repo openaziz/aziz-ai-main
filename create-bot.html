@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء بوت جديد - عبدالعزيز AI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="/images/logo.png" alt="عبدالعزيز AI" width="40" height="40">
+                    <span>عبدالعزيز AI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/code-editor"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/hosting"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="/repositories"><i class="fas fa-database"></i> المستودعات</a></li>
+                    <li><a href="/bot-manager"><i class="fas fa-robot"></i> إدارة البوت</a></li>
+                    <li><a href="/create-bot" class="active"><i class="fas fa-plus-circle"></i> إنشاء بوت</a></li>
+                    <li><a href="/blue-wolf"><i class="fas fa-dog"></i> الذئب الأزرق</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container mx-auto py-8 px-4">
+                <h1 class="text-3xl font-bold mb-6">إنشاء بوت جديد</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Main Form -->
+                    <div class="md:col-span-2">
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-6">
+                            <form id="create-bot-form">
+                                <!-- Basic Information -->
+                                <div class="mb-6">
+                                    <h2 class="text-xl font-bold mb-4 text-purple-400">المعلومات الأساسية</h2>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="space-y-2">
+                                            <label for="bot-name" class="block text-sm font-medium">اسم البوت</label>
+                                            <input type="text" id="bot-name" name="botName" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="مثال: عبدالعزيز AI" required>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="bot-avatar" class="block text-sm font-medium">صورة البوت</label>
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-robot text-white"></i>
+                                                </div>
+                                                <input type="file" id="bot-avatar" name="botAvatar" class="hidden">
+                                                <label for="bot-avatar" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded cursor-pointer">اختر صورة</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 space-y-2">
+                                        <label for="bot-description" class="block text-sm font-medium">وصف البوت</label>
+                                        <textarea id="bot-description" name="botDescription" rows="3" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="اكتب وصفاً مختصراً لبوتك وقدراته..."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- API Keys -->
+                                <div class="mb-6">
+                                    <h2 class="text-xl font-bold mb-4 text-purple-400">مفاتيح API</h2>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="space-y-2">
+                                            <label for="openai-key" class="block text-sm font-medium">OpenAI API Key</label>
+                                            <input type="password" id="openai-key" name="openaiKey" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="sk-...">
+                                            <p class="text-xs text-gray-400 mt-1">مطلوب لاستخدام نماذج GPT-4 و GPT-3.5</p>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="claude-key" class="block text-sm font-medium">Claude API Key</label>
+                                            <input type="password" id="claude-key" name="claudeKey" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="sk-...">
+                                            <p class="text-xs text-gray-400 mt-1">مطلوب لاستخدام نماذج Claude من Anthropic</p>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="gemini-key" class="block text-sm font-medium">Gemini API Key</label>
+                                            <input type="password" id="gemini-key" name="geminiKey" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="...">
+                                            <p class="text-xs text-gray-400 mt-1">مطلوب لاستخدام نماذج Gemini من Google</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Advanced Settings -->
+                                <div class="mb-6">
+                                    <h2 class="text-xl font-bold mb-4 text-purple-400">إعدادات متقدمة</h2>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="space-y-2">
+                                            <label for="system-prompt" class="block text-sm font-medium">رسالة النظام (System Prompt)</label>
+                                            <textarea id="system-prompt" name="systemPrompt" rows="6" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" placeholder="اكتب رسالة النظام التي تحدد شخصية وسلوك البوت...">أنت مساعد ذكي اسمه عبدالعزيز AI، تم تطويرك لمساعدة المستخدمين في بناء المشاريع البرمجية وحل المشكلات التقنية. 
+
+1. التفاعل مع المستخدم:
+- كن ودوداً ومتعاوناً وقدم إجابات دقيقة ومفيدة
+- استخدم لغة واضحة ومباشرة مع المستخدمين
+- اسأل أسئلة توضيحية عند الحاجة لفهم طلب المستخدم بشكل أفضل
+- قدم اقتراحات بناءة عندما يواجه المستخدم مشكلة
+
+2. كتابة الكود:
+- اكتب كوداً نظيفاً وقابلاً للقراءة مع تعليقات توضيحية
+- استخدم أفضل الممارسات في البرمجة وأنماط التصميم
+- قدم شرحاً مفصلاً للكود المكتوب لمساعدة المستخدم على فهمه
+- اقترح تحسينات وبدائل عندما يكون ذلك مناسباً
+
+3. حل المشكلات:
+- استخدم منهجية التفكير العميق لتحليل المشكلات خطوة بخطوة
+- فكر في جميع الاحتمالات والحلول الممكنة
+- قيّم الحلول المختلفة وقدم توصيات مبنية على الأدلة
+- تعلم من التجارب السابقة وطبق الدروس المستفادة
+
+4. الأمان والخصوصية:
+- لا تشارك معلومات حساسة أو شخصية
+- اتبع أفضل ممارسات الأمان في جميع التوصيات والحلول
+- نبه المستخدمين إلى المخاطر المحتملة في الحلول المقترحة
+- احترم خصوصية المستخدم وبياناته في جميع الأوقات</textarea>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="space-y-2">
+                                                <label for="default-model" class="block text-sm font-medium">النموذج الافتراضي</label>
+                                                <select id="default-model" name="defaultModel" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                                    <option value="gpt-4o">GPT-4o (OpenAI)</option>
+                                                    <option value="gpt-4-turbo">GPT-4 Turbo (OpenAI)</option>
+                                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (OpenAI)</option>
+                                                    <option value="claude-3-opus">Claude 3 Opus (Anthropic)</option>
+                                                    <option value="claude-3-sonnet">Claude 3 Sonnet (Anthropic)</option>
+                                                    <option value="gemini-pro">Gemini Pro (Google)</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="space-y-2">
+                                                <label for="temperature" class="block text-sm font-medium">درجة الإبداعية (Temperature)</label>
+                                                <div class="flex items-center">
+                                                    <input type="range" id="temperature" name="temperature" min="0" max="1" step="0.1" value="0.7" class="w-full bg-gray-700">
+                                                    <span id="temperature-value" class="ml-2 text-sm">0.7</span>
+                                                </div>
+                                                <p class="text-xs text-gray-400 mt-1">0 = أكثر دقة، 1 = أكثر إبداعاً</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="space-y-2">
+                                                <label for="max-tokens" class="block text-sm font-medium">الحد الأقصى للكلمات (Max Tokens)</label>
+                                                <input type="number" id="max-tokens" name="maxTokens" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded" value="4000" min="100" max="32000">
+                                            </div>
+                                            
+                                            <div class="space-y-2">
+                                                <label for="context-length" class="block text-sm font-medium">طول سياق المحادثة</label>
+                                                <select id="context-length" name="contextLength" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                                    <option value="5">5 رسائل</option>
+                                                    <option value="10" selected>10 رسائل</option>
+                                                    <option value="20">20 رسالة</option>
+                                                    <option value="50">50 رسالة</option>
+                                                    <option value="100">100 رسالة</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Deep Thinking Settings -->
+                                <div class="mb-6">
+                                    <h2 class="text-xl font-bold mb-4 text-purple-400">إعدادات التفكير العميق</h2>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <label for="deep-thinking" class="text-sm font-medium">تفعيل التفكير العميق</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="deep-thinking" name="deepThinking" checked>
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-400">التفكير العميق يتيح للبوت تحليل المشكلات بشكل أعمق وتقديم حلول أكثر دقة وإبداعاً.</p>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="thinking-steps" class="block text-sm font-medium">عدد خطوات التفكير</label>
+                                            <select id="thinking-steps" name="thinkingSteps" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                                <option value="3">3 خطوات (سريع)</option>
+                                                <option value="5" selected>5 خطوات (متوازن)</option>
+                                                <option value="7">7 خطوات (عميق)</option>
+                                                <option value="10">10 خطوات (متقدم جداً)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="thinking-style" class="block text-sm font-medium">أسلوب التفكير</label>
+                                            <select id="thinking-style" name="thinkingStyle" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                                <option value="analytical">تحليلي (مناسب للمشكلات التقنية)</option>
+                                                <option value="creative" selected>إبداعي (مناسب لتوليد الأفكار)</option>
+                                                <option value="critical">نقدي (مناسب لتقييم الحلول)</option>
+                                                <option value="balanced">متوازن (مزيج من الأساليب)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label for="thinking-framework" class="block text-sm font-medium">إطار التفكير</label>
+                                            <select id="thinking-framework" name="thinkingFramework" class="w-full bg-gray-700 border-gray-600 text-white p-2 rounded">
+                                                <option value="socratic">سقراطي (التفكير بالأسئلة)</option>
+                                                <option value="first-principles" selected>المبادئ الأولى (تفكيك المشكلات)</option>
+                                                <option value="lateral">جانبي (التفكير خارج الصندوق)</option>
+                                                <option value="systems">منظومي (فهم العلاقات والتأثيرات)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Capabilities -->
+                                <div class="mb-6">
+                                    <h2 class="text-xl font-bold mb-4 text-purple-400">القدرات والأدوات</h2>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <label for="web-search" class="text-sm font-medium">البحث في الويب</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="web-search" name="webSearch" checked>
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <label for="code-generation" class="text-sm font-medium">توليد الأكواد البرمجية</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="code-generation" name="codeGeneration" checked>
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <label for="image-analysis" class="text-sm font-medium">تحليل الصور</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="image-analysis" name="imageAnalysis" checked>
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <label for="file-processing" class="text-sm font-medium">معالجة الملفات</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="file-processing" name="fileProcessing" checked>
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <label for="data-analysis" class="text-sm font-medium">تحليل البيانات</label>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="data-analysis" name="dataAnalysis">
+                                                <span class="slider round"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Submit Button -->
+                                <div class="flex justify-end">
+                                    <button type="submit" id="create-bot-button" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-bold transition-all duration-200">
+                                        <i class="fas fa-robot mr-2"></i>
+                                        إنشاء البوت
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar -->
+                    <div class="md:col-span-1">
+                        <!-- Preview Card -->
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-6 mb-6">
+                            <h2 class="text-xl font-bold mb-4 text-purple-400">معاينة البوت</h2>
+                            
+                            <div class="flex flex-col items-center mb-4">
+                                <div id="preview-avatar" class="w-20 h-20 rounded-full bg-transparent flex items-center justify-center mb-2">
+                                    <img src="/images/logo.png" alt="عبدالعزيز AI" class="w-full h-full object-cover rounded-full">
+                                </div>
+                                <h3 id="preview-name" class="text-lg font-bold">عبدالعزيز AI</h3>
+                                <p id="preview-description" class="text-sm text-gray-400 text-center mt-1">مساعد ذكي لبناء المشاريع البرمجية وحل المشكلات التقنية</p>
+                            </div>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">النموذج:</span>
+                                    <span id="preview-model">GPT-4o</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">الإبداعية:</span>
+                                    <span id="preview-temperature">0.7</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">التفكير العميق:</span>
+                                    <span id="preview-thinking">مفعل</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">القدرات:</span>
+                                    <span id="preview-capabilities">5</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tips Card -->
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg p-6">
+                            <h2 class="text-xl font-bold mb-4 text-purple-400">نصائح</h2>
+                            
+                            <div class="space-y-4 text-sm">
+                                <div>
+                                    <h3 class="font-bold mb-1">رسالة النظام</h3>
+                                    <p class="text-gray-300">استخدم رسالة نظام واضحة ومفصلة لتحديد شخصية وسلوك البوت بدقة.</p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-bold mb-1">درجة الإبداعية</h3>
+                                    <p class="text-gray-300">استخدم قيمة منخفضة (0.2-0.4) للمهام التي تتطلب دقة، وقيمة أعلى (0.7-0.9) للمهام الإبداعية.</p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-bold mb-1">التفكير العميق</h3>
+                                    <p class="text-gray-300">يساعد التفكير العميق البوت على تحليل المشكلات المعقدة بشكل أفضل، لكنه قد يزيد من وقت الاستجابة.</p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-bold mb-1">مفاتيح API</h3>
+                                    <p class="text-gray-300">تأكد من إضافة مفتاح API واحد على الأقل للنموذج الذي تريد استخدامه.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تم إنشاء البوت بنجاح!</h2>
+                <button id="close-success-modal" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <div class="w-20 h-20 rounded-full bg-green-600 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check text-white text-3xl"></i>
+                    </div>
+                    <h3 id="success-bot-name" class="text-xl font-bold mb-2">عبدالعزيز AI</h3>
+                    <p class="text-gray-300">تم إنشاء البوت بنجاح ويمكنك الآن استخدامه!</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">رابط البوت</h4>
+                        <div class="flex">
+                            <input id="bot-url" type="text" class="flex-1 bg-gray-800 border-gray-600 text-white p-2 rounded-l" value="https://aziz-ai.vercel.app/bot/123456" readonly>
+                            <button id="copy-url" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-r">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <a href="/bot-manager" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+                            إدارة البوتات
+                        </a>
+                        <a id="go-to-bot" href="#" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+                            الذهاب إلى البوت
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form elements
+            const form = document.getElementById('create-bot-form');
+            const botNameInput = document.getElementById('bot-name');
+            const botDescriptionInput = document.getElementById('bot-description');
+            const temperatureInput = document.getElementById('temperature');
+            const temperatureValue = document.getElementById('temperature-value');
+            const deepThinkingToggle = document.getElementById('deep-thinking');
+            const defaultModelSelect = document.getElementById('default-model');
+            
+            // Preview elements
+            const previewName = document.getElementById('preview-name');
+            const previewDescription = document.getElementById('preview-description');
+            const previewModel = document.getElementById('preview-model');
+            const previewTemperature = document.getElementById('preview-temperature');
+            const previewThinking = document.getElementById('preview-thinking');
+            const previewCapabilities = document.getElementById('preview-capabilities');
+            
+            // Modal elements
+            const successModal = document.getElementById('success-modal');
+            const closeSuccessModal = document.getElementById('close-success-modal');
+            const successBotName = document.getElementById('success-bot-name');
+            const botUrl = document.getElementById('bot-url');
+            const copyUrlButton = document.getElementById('copy-url');
+            const goToBotButton = document.getElementById('go-to-bot');
+            
+            // Update preview when form inputs change
+            botNameInput.addEventListener('input', function() {
+                previewName.textContent = this.value || 'عبدالعزيز AI';
+            });
+            
+            botDescriptionInput.addEventListener('input', function() {
+                previewDescription.textContent = this.value || 'مساعد ذكي لبناء المشاريع البرمجية وحل المشكلات التقنية';
+            });
+            
+            temperatureInput.addEventListener('input', function() {
+                temperatureValue.textContent = this.value;
+                previewTemperature.textContent = this.value;
+            });
+            
+            deepThinkingToggle.addEventListener('change', function() {
+                previewThinking.textContent = this.checked ? 'مفعل' : 'معطل';
+            });
+            
+            defaultModelSelect.addEventListener('change', function() {
+                previewModel.textContent = this.options[this.selectedIndex].text.split(' ')[0];
+            });
+            
+            // Count enabled capabilities
+            const capabilityToggles = [
+                document.getElementById('web-search'),
+                document.getElementById('code-generation'),
+                document.getElementById('image-analysis'),
+                document.getElementById('file-processing'),
+                document.getElementById('data-analysis')
+            ];
+            
+            capabilityToggles.forEach(toggle => {
+                toggle.addEventListener('change', updateCapabilitiesCount);
+            });
+            
+            function updateCapabilitiesCount() {
+                const enabledCount = capabilityToggles.filter(toggle => toggle.checked).length;
+                previewCapabilities.textContent = enabledCount;
+            }
+            
+            // Initialize capabilities count
+            updateCapabilitiesCount();
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                const submitButton = document.getElementById('create-bot-button');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> جاري الإنشاء...';
+                submitButton.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Reset button
+                    submitButton.innerHTML = originalButtonText;
+                    submitButton.disabled = false;
+                    
+                    // Show success modal
+                    successBotName.textContent = botNameInput.value || 'عبدالعزيز AI';
+                    botUrl.value = `https://aziz-ai.vercel.app/bot/${Math.random().toString(36).substring(2, 8)}`;
+                    goToBotButton.href = botUrl.value;
+                    successModal.classList.remove('hidden');
+                }, 2000);
+            });
+            
+            // Copy URL button
+            copyUrlButton.addEventListener('click', function() {
+                botUrl.select();
+                document.execCommand('copy');
+                
+                // Show copied feedback
+                const originalIcon = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = originalIcon;
+                }, 2000);
+            });
+            
+            // Close modal
+            closeSuccessModal.addEventListener('click', function() {
+                successModal.classList.add('hidden');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === successModal) {
+                    successModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>  {
+                    successModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <style>
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #8b5cf6;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #8b5cf6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: #1f2937;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .close-button {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .close-button:hover {
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</body>
+</html>

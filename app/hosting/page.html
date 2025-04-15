@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استضافة المواقع - AzizAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AzizAI</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="/chat"><i class="fas fa-comment"></i> المحادثة</a></li>
+                    <li><a href="/code-editor"><i class="fas fa-code"></i> محرر الكود</a></li>
+                    <li><a href="/kali-hunter.html"><i class="fas fa-shield-alt"></i> كالي هنتر</a></li>
+                    <li><a href="/hosting" class="active"><i class="fas fa-server"></i> الاستضافة</a></li>
+                    <li><a href="/repositories"><i class="fas fa-database"></i> المستودعات</a></li>
+                    <li><a href="/bot-manager"><i class="fas fa-robot"></i> إدارة البوت</a></li>
+                    <li><a href="/blue-wolf"><i class="fas fa-dog"></i> الذئب الأزرق</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">عبدالعزيز</div>
+                        <div class="user-email">sa6aa6116@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container mx-auto py-8 px-4">
+                <h1 class="text-3xl font-bold mb-6">استضافة المواقع</h1>
+
+                <div class="tabs">
+                    <button class="tab active" data-tab="websites">
+                        <i class="fas fa-globe mr-2"></i>
+                        مواقعي
+                    </button>
+                    <button class="tab" data-tab="new">
+                        <i class="fas fa-upload mr-2"></i>
+                        موقع جديد
+                    </button>
+                    <button class="tab" data-tab="databases">
+                        <i class="fas fa-database mr-2"></i>
+                        قواعد البيانات
+                    </button>
+                </div>
+
+                <!-- Websites Tab -->
+                <div id="websites-tab" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card bg-gray-800 border-gray-700 rounded-lg overflow-hidden">
+                            <div class="p-4 border-b border-gray-700">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">موقعي الشخصي</h3>
+                                        <p class="text-sm text-gray-400">mywebsite.azizai.com</p>
+                                    </div>
+                                    <span class="badge bg-green-600 text-white px-2 py-1 rounded text-xs">متصل</span>
+                                </div>
+                            </div>
+                            <div class="p-4 space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>المساحة</span>
+                                        <span>128 MB / 1024 MB</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-purple-600" style="width: 12.5%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
